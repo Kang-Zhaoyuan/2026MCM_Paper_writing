@@ -24,6 +24,31 @@
 \usepackage{tocloft}
 \usepackage{enumitem}
 \usepackage{lastpage}
+\usepackage{listings}
+\usepackage{url}
+
+% Enable hyperlinks and URL handling (load near the end of preamble)
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+% Search images under ./images by default
+\graphicspath{{images/}}
+
+% Safely include graphics: show a placeholder box if the file is missing
+\makeatletter
+\let\orig@includegraphics\includegraphics
+\newcommand{\safeincludegraphics}[2][]{%
+    \begingroup
+    \def\temp@file{#2}%
+    \IfFileExists{\temp@file}{\orig@includegraphics[#1]{\temp@file}}{%
+        \IfFileExists{\temp@file.pdf}{\orig@includegraphics[#1]{\temp@file.pdf}}{%
+            \IfFileExists{\temp@file.png}{\orig@includegraphics[#1]{\temp@file.png}}{%
+                \IfFileExists{\temp@file.jpg}{\orig@includegraphics[#1]{\temp@file.jpg}}{%
+                    \fbox{\parbox[c][4cm][c]{0.9\textwidth}{\centering Missing image: \texttt{#2}}}%
+                }}}}%
+    \endgroup
+}
+\renewcommand{\includegraphics}[2][]{\safeincludegraphics[#1]{#2}}
+\makeatother
 
 % Float placement tuning
 \setcounter{topnumber}{2}
@@ -939,33 +964,6 @@ z_{i,s,w} = a_{i,s} + \beta_{i,s} \cdot w + \varepsilon_{i,s,w},
     \label{fig:partner_scatter}
 \end{figure}
 
-\subsubsection{Top 舞伴识别：相对下滑最慢的“教练型”舞伴}
-\begin{table}[htbp]
-    \centering
-    \small
-    \caption{资深舞伴的 Top 示例对比：评委通道（教学/编排）与粉丝通道（动员/传播）并不完全一致。}
-    \label{tab:partner_top_examples}
-    \begin{tabular}{@{}l p{0.42\textwidth} p{0.42\textwidth}@{}}
-        \toprule
-        \textbf{维度} & \textbf{评委通道} & \textbf{粉丝通道} \\
-        \midrule
-        \textbf{指标} & $\overline{\beta}^{(J)}_p$ & $\overline{\beta}^{(F)}_p$ \\
-        \textbf{Top 舞伴示例} & Jenna Johnson（$\approx-0.033$），Emma Slater（$\approx-0.050$），Mark Ballas（$\approx-0.066$） & Alan Bersten（$\approx-0.033$），Pasha Pashkov（$\approx-0.042$），Lindsay Arnold（$\approx-0.057$） \\
-        \textbf{含义} & 更偏向“教学能力”：帮助选手在相对竞争中下滑更慢/更易提升。 & 更偏向“吸粉能力”：与叙事、曝光与粉丝动员等机制耦合更强。 \\
-        \bottomrule
-    \end{tabular}
-\end{table}
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.85\textwidth]{partner_improvement_ranking}
-    \caption{资深舞伴 Top 10：按评委通道平均成长斜率排序（越接近 0，表示相对表现下滑越慢/成长越强）。}
-    \label{fig:partner_improvement_ranking}
-\end{figure}
-
-\noindent\textbf{小结：} 舞伴效应在评委通道更接近“专业能力差异”（基础水平与成长速度存在相关）；而粉丝通道更像“传播与动员差异”（基础与成长几乎无关）。这也解释了为何某些舞伴能持续带出技术层面更稳定的选手，但未必同步获得更快的粉丝增长。
-
-
 
 \subsection{多因素综合归因：随机森林模型}
 
@@ -1024,19 +1022,26 @@ g_i, & g_i\in\mathcal{G}_K,\\
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.92\textwidth]{feature_importance_zscore}
-    \caption{随机森林特征重要性：分别预测赛季内标准化的评委评分与粉丝投票（Z-Score）。}
-    \label{fig:rf_feature_importance}
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{feature_importance_zscore}
+        \caption{随机森林特征重要性：分别预测赛季内标准化的评委评分与粉丝投票（Z-Score）。}
+        \label{fig:rf_feature_importance}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{feature_importance_detailed}
+        \caption{随机森林特征重要性（细分地区版本）：用于检验地域变量粒度提升后的稳定性。}
+        \label{fig:rf_feature_importance_detailed}
+    \end{subfigure}
+    \caption{两通道重要性与细分地区版本的并排对比。}
+    \label{fig:rf_feature_importance_pair}
 \end{figure}
 
 为检验地区刻画的粒度是否改变结论，我们进一步采用细分地区版本训练模型（前 15 州 + 前 3 国家等），并输出更长的 Top 特征列表（见图 \ref{fig:rf_feature_importance_detailed}）。若某些具体州在粉丝端的重要性显著上升，则可被解释为“地域动员”在粉丝通道中可被模型捕捉；而在评委端若州特征普遍不突出，则支持“评委端对地域不敏感”。
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.92\textwidth]{feature_importance_detailed}
-    \caption{随机森林特征重要性（细分地区版本）：用于检验地域变量粒度提升后的稳定性。}
-    \label{fig:rf_feature_importance_detailed}
-\end{figure}
+% (已在图 \ref{fig:rf_feature_importance_pair} 中并排呈现两张图，保留各自标签以兼容交叉引用)
 
 
 \noindent\textbf{本节小结：} 我们在统一的特征映射 $\mathbf{x}$ 下分别拟合 $\hat f^{(J)}$ 与 $\hat f^{(F)}$，并用 MDI 重要性 $\mathrm{Imp}_k$ 与交互矩阵 $\mathbf{P}$ 对两条通道的驱动因素进行对照，从而将单因素图表提升为“多因素条件下”的结构解释。
@@ -1129,11 +1134,73 @@ g_i, & g_i\in\mathcal{G}_K,\\
 
 \section{Conclusion}
 
+本文研究DWTS评分机制中的结构性矛盾：如何在专业评委的技术评价与观众的人气投票之间取得稳健平衡。在缺乏直接投票数据的现实约束下，我们从制度与机制角度分析规则运行与偏差，并提出兼顾公平性、可解释性与参与度的改进方案。核心发现表明，争议源于制度的放大效应，需从规则层面加以修正。
+
+
+总体结论有三点：其一，评委分与粉丝票反映不同维度的价值，问题在于对粉丝影响缺乏合理约束，导致技术评价被稀释；其二，百分比制与排名制均存在内生偏向，在“人气—技术”差异显著时易放大极端结果；其三，在关键节点引入有限评委干预或设置粉丝分上限，能在不削弱参与的前提下提升公平性与稳定性。
+\vspace{0.3em}
+\noindent 总体结论如下：
+\begin{itemize}[leftmargin=*]
+    \item 评委分与粉丝票反映不同维度的价值；关键在于对粉丝影响施加合理约束，避免技术评价被稀释。
+    \item 百分比制与排名制均存在内生偏向；在人气与技术差异显著时，易放大极端结果。
+    \item 在关键节点引入有限评委干预，或设置粉丝分上限，可在不削弱参与的前提下提升公平性与稳定性。
+\end{itemize}
+
+为此，本文提出“双轨线性积分系统”，以对称、线性的“30+30”框架并行整合专业与大众，减少隐含放大并提升可解释性与接受度。该思路可推广至其他“专业评价＋大众投票”的赛事；未来可在保持核心结构的前提下，随参与方式与数据来源的丰富持续优化，实现公正性、娱乐性与黏性的共赢。
+
+\clearpage
 \clearpage
 \begin{thebibliography}{99}
-\bibitem{ref1} Author. Title. Journal/Website, Year.
-\end{thebibliography}
 
+\bibitem{Dangelo2018} 
+S. D’Angelo, T. B. Murphy \& M. Alfò. 
+``Latent Space Modeling of Multidimensional Networks with Application to the Exchange of Votes in Eurovision Song Contest.'' 
+\textit{arXiv preprint arXiv:1807.06517}, 2018.
+
+\bibitem{Blangiardo2013} 
+M. Blangiardo \& G. Baio. 
+``Evidence of bias in the Eurovision song contest: modelling the votes using Bayesian hierarchical models.'' 
+\textit{arXiv preprint arXiv:1310.3501}, 2013.
+
+\bibitem{Fairstein2019} 
+R. Fairstein, A. Lauz, K. Gal \& R. Meir. 
+``Modeling People’s Voting Behavior with Poll Information.'' 
+\textit{arXiv preprint arXiv:1902.04118}, 2019.
+
+\bibitem{Chen2015} 
+L. Chen, P. Xu \& D. Liu. 
+``Experts versus the Crowd: A Comparison of Selection Mechanisms in Crowdsourcing Contests.'' 
+\textit{SSRN Electronic Journal}, 2015. 
+DOI: 10.2139/ssrn.2631317.
+
+\bibitem{Zhang2020} 
+D. Zhang. 
+``Methods and Rules of Voting and Decision: A Literature Review.'' 
+\textit{Open Journal of Social Sciences}, vol. 8, no. 9, pp. 310–326, 2020.
+
+\bibitem{Shapley1954} 
+L. S. Shapley \& M. Shubik. 
+``A Method for Evaluating the Distribution of Power in a Committee System.'' 
+\textit{American Political Science Review}, vol. 48, no. 3, pp. 787–792, 1954.
+
+\bibitem{McDougall} 
+``Voting Matters.'' 
+McDougall Trust, \url{https://www.mcdougall.org.uk/}.
+
+\bibitem{VotingTheory} 
+``Probabilistic voting model.'' 
+In \textit{Voting Theory}, \url{https://en.wikipedia.org/wiki/Probabilistic_voting}.
+
+\bibitem{GoogleTrends} 
+``Google Trends.'' 
+Google LLC, \url{https://trends.google.com/}.
+
+\bibitem{pytrends} 
+General Mills. 
+``pytrends: Unofficial API for Google Trends.'' 
+GitHub repository, \url{https://github.com/GeneralMills/pytrends}.
+
+\end{thebibliography}
 \label{LastRegularPage} 
 
 \clearpage
@@ -1167,9 +1234,7 @@ g_i, & g_i\in\mathcal{G}_K,\\
         \textit{I need to consolidate the estimated fan volume data for Seasons 1 to 34 into a single file, with the requirement to keep all original column names unchanged. Please provide the corresponding code.}
         \end{quote}
         \textbf{Output (partial code):}
-        \begin{quote}
-        \small
-        \begin{verbatim}
+        \begin{lstlisting}[language=Python,basicstyle=\ttfamily\small,frame=single]
 if len(all_data) == 0:
     raise ValueError("All files failed to read or no valid data exists, merging is not possible!")
 # Merge all DataFrames, ignore original indices, and reset a new continuous index
@@ -1182,8 +1247,7 @@ merged_df = merged_df.drop_duplicates(subset=["Season", "Week", "Name"], keep="f
 # Step 5: Save the merged result
 merged_df.to_csv(Config.OUTPUT_FILE, index=False, encoding="utf-8-sig")
 print(f"\n Merging completed! The full-season data has been saved to: {Config.OUTPUT_FILE}")
-    \end{verbatim}
-    \end{quote}
+        \end{lstlisting}
         \item \textbf{Grammarly:} We used Grammarly to correct minor grammatical errors in the text.
     \end{enumerate}
 \end{enumerate}
