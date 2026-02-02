@@ -48,10 +48,14 @@
 \contentsline {subsubsection}{\numberline {7.6.2}Q3 代码逻辑与模型构建}{21}{}%
 \contentsline {subsubsection}{\numberline {7.6.3}特征重要性排序：评委端更“能力导向”，粉丝端更“结构导向”}{22}{}%
 \contentsline {subsection}{\numberline {7.7}总结}{22}{}%
-\contentsline {section}{\numberline {8}给组委会的建议}{25}{}%
-\contentsline {section}{\numberline {9}Results and Discussion}{25}{}%
-\contentsline {section}{\numberline {10}Sensitivity Analysis}{25}{}%
-\contentsline {section}{\numberline {11}Strengths and Weaknesses}{25}{}%
-\contentsline {subsection}{\numberline {11.1}Strengths}{25}{}%
-\contentsline {subsection}{\numberline {11.2}Weaknesses}{25}{}%
-\contentsline {section}{\numberline {12}Conclusion}{25}{}%
+\contentsline {section}{\numberline {8}给组委会的建议: 迈向直观与平衡的新纪元}{25}{}%
+\contentsline {subsection}{\numberline {8.1}提案核心： “30+30” 计分模式}{25}{}%
+\contentsline {subsection}{\numberline {8.2}优势一：极致的观众友好度 (Audience Accessibility)}{25}{}%
+\contentsline {subsection}{\numberline {8.3}优势二：强制性的结构平衡 (Structural Balance)}{26}{}%
+\contentsline {subsection}{\numberline {8.4}总结}{26}{}%
+\contentsline {section}{\numberline {9}Results and Discussion}{26}{}%
+\contentsline {section}{\numberline {10}Sensitivity Analysis}{26}{}%
+\contentsline {section}{\numberline {11}Strengths and Weaknesses}{26}{}%
+\contentsline {subsection}{\numberline {11.1}Strengths}{26}{}%
+\contentsline {subsection}{\numberline {11.2}Weaknesses}{26}{}%
+\contentsline {section}{\numberline {12}Conclusion}{26}{}%

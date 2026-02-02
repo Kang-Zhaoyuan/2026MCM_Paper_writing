@@ -986,7 +986,61 @@ g_i, & g_i\in\mathcal{G}_K,\\
 
 
 
-\section{给组委会的建议}
+\section{给组委会的建议: 迈向直观与平衡的新纪元}
+\label{sec:recommendations}
+
+基于本研究对 DWTS 历史计分规则（排名法与百分比法）的量化评估，我们发现复杂的权重计算往往是导致观众困惑与结果争议的根源。为了在提升节目娱乐性的同时捍卫舞蹈竞技的专业底线，我们建议组委会采用一种全新的\textbf{“双轨线性积分系统” (Dual-Track Linear Scoring System, DTLSS)}。
+
+这一机制的设计哲学是：让规则像游戏一样简单，让结果像天平一样平衡。
+
+\subsection{提案核心： “30+30” 计分模式}
+
+我们建议废除晦涩难懂的“票数百分比”或隐晦的“综合排名”计算，转而采用一种极具透明度的积分叠加制。该模型将比赛拆分为两条平行的赛道，且两条赛道拥有完全一致的分值权重（0-30分）：
+
+\begin{description}
+    \item[评委赛道 (Judges' Track):] 维持现状。三位评委给出的分数直接累加，满分为 30分。这代表了选手的\textbf{技术硬上限}。
+    \item[粉丝赛道 (Fans' Track):] 将粉丝投票的排名直接线性转化为分数，满分同样为 30分。这代表了选手的\textbf{人气硬上限}。
+\end{description}
+
+\noindent \textbf{计算逻辑：}
+\begin{equation}
+    S_{Fan} = 30 - \delta \times (Rank_{Fan} - 1)
+\end{equation}
+
+\noindent \textbf{规则设定：}粉丝投票第1名直接获得 30分；第2名获得 28分；第3名获得 26分（设定步长 $\delta=2$）。
+
+\noindent \textbf{最终裁定:}
+\begin{equation}
+    TotalScore = Score_{Judge} + Score_{Fan}
+\end{equation}
+直接相加，总分最低者淘汰。
+
+\subsection{优势一：极致的观众友好度 (Audience Accessibility)}
+
+与以往观众无法直观判断“几百万票能抵消多少评委分”不同，新机制具有极强的可解释性 (Interpretability) 和电视表现力：
+
+\begin{itemize}
+    \item \textbf{“一听就懂”的规则：}主持人只需宣布：“在粉丝投票中拿第一，就能帮你的偶像拿到满分30分！”这种简单的激励机制比任何复杂的百分算法都更能调动观众的投票热情。
+    \item \textbf{悬念可视化的直播体验：}在直播环节，屏幕左侧显示确定的“评委分（基数）”，右侧则是动态滚动的“粉丝分（变数）”。观众可以清晰地看到：“我的偶像现在评委分落后2分，只需要在粉丝排名中高过对手一名，就能追平比分！” 这种直观的加法运算将极大地增强节目的紧张感与互动性。
+\end{itemize}
+
+\subsection{优势二：强制性的结构平衡 (Structural Balance)}
+
+我们在 Section 6.4 的分析中指出，Season 27 的争议源于粉丝票数在百分比法下的无限膨胀。新机制通过\textbf{“量纲统一”}彻底解决了这一隐患：
+
+\begin{itemize}
+    \item \textbf{流量封顶机制：}无论某位明星的粉丝基数有多庞大（即使是像 Bobby Bones 那样的“离群点”），他在粉丝赛道的收益上限被严格锁定为 30分。他无法再利用数百万的超额选票去填补评委分的巨大深坑。
+    \item \textbf{专业底线的数学防守：}
+    \begin{itemize}
+        \item \textit{情景回测：}假设某争议选手舞技极差（评委分 15分），但人气极高（粉丝分 30分），其总分为 45分。
+        \item \textit{对比选手：}一位表现优异（评委分 27分）但人气中等（粉丝排名第3，获 26分）的选手，其总分为 53分。
+        \item \textit{结果：}$53 > 45$。即使在人气完全碾压的情况下，专业分过低依然会导致淘汰。这从数学原理上杜绝了“不会跳舞的冠军”，确保了比赛结果的公正性。
+    \end{itemize}
+\end{itemize}
+
+\subsection{总结}
+
+“双轨线性积分系统”并未削弱粉丝的参与感，而是将粉丝的支持转化为看得见、算得清的“积分奖励”。它用最简单的加法逻辑，在复杂的社会选择问题中实现了专业评判与大众喜爱的完美制衡。建议组委会在 Season 35 优先试行此方案。
 
 \section{Results and Discussion}
 
