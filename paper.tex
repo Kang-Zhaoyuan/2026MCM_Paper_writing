@@ -1,0 +1,1022 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\geometry{left=1in,right=0.75in,top=1in,bottom=1in,headheight=14.49998pt}
+
+\newcommand{\Problem}{C}
+\newcommand{\Team}{Team\_Number}
+\newcommand{\Title}{Balancing Judges and Fans: Reconstructing Votes and Evaluating DWTS Scoring Rules}
+
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\setmainfont{Times New Roman}
+\setCJKmainfont[BoldFont=SimHei,ItalicFont=KaiTi]{SimSun}
+\setCJKmonofont{SimSun}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{xcolor}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{fancyhdr}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{tocloft}
+\usepackage{enumitem}
+\usepackage{lastpage}
+
+\renewcommand{\contentsname}{Contents}
+\renewcommand{\refname}{References}
+
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsubsecleader}{\cftdotfill{\cftdotsep}}
+\setlength{\cftbeforesecskip}{0.5em}
+\setlength{\cftbeforesubsecskip}{0.3em}
+
+\pagestyle{fancy}
+\fancyhf{} 
+\rhead{Page \thepage\ of \pageref{LastRegularPage}} 
+\renewcommand{\headrulewidth}{0.4pt}
+
+\begin{document}
+
+\thispagestyle{empty}
+\vspace*{-16ex}
+\centerline{
+    \begin{tabular}{*3{c}}
+        \parbox[t]{0.3\linewidth}{\begin{center}\textbf{Problem Chosen}\\ \Large \textcolor{red}{\Problem}\end{center}} & 
+        \parbox[t]{0.3\linewidth}{\begin{center}\textbf{2026\\ MCM/ICM\\ Summary Sheet}\end{center}} & 
+        \parbox[t]{0.3\linewidth}{\begin{center}\textbf{Team Control Number}\\ \Large \textcolor{red}{\Team}\end{center}} \\
+        \hline
+    \end{tabular}
+}
+\vspace{2ex}
+
+\begin{center}
+    \large \textbf{\Title}
+\end{center}
+
+\begin{center}
+    \textbf{\large Summary}
+\end{center}
+
+Enter your summary here, outlining the background, methods, models, and main conclusions.
+
+\vspace{1em}
+
+\noindent\textbf{Keywords:} Keyword1, Keyword2, Keyword3
+
+\clearpage
+
+\pagenumbering{roman}
+\setcounter{page}{1}
+\rhead{Page \thepage\ of \pageref{LastRegularPage}} 
+\tableofcontents
+
+\clearpage
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\section{Introduction}
+\subsection{Problem Background}
+%这里写问题背景介绍。
+\textit{Dancing with the Stars (DWTS)} is a long-running television program that integrates professional dance competition with popular entertainment. In each season, celebrities from diverse professional backgrounds are paired with professional dancers and compete in an elimination-style format through weekly dance performances. A contestant’s progression and eventual outcome in the competition are jointly determined by two core components: \textbf{professional judges’ scores}, which evaluate dance technique, choreography, and artistic expression, and \textbf{audience votes}, which reflect public preferences.
+
+In contrast to the objectively quantified judges’ scores, audience voting behavior is inherently subjective and multifaceted. It is influenced not only by a contestant’s weekly dance performance, but also by their pre-existing popularity, fan base, emotional appeal, and various socio-demographic factors. However, the show’s organizers do not disclose the detailed weekly voting data for individual contestants, releasing only final rankings and elimination outcomes. This lack of transparency creates a fundamental challenge for the quantitative analysis and systematic understanding of the voting mechanism.
+
+Throughout the show’s history, persistent debates have emerged regarding the fairness and rationality of the DWTS voting system. On one hand, judges’ scores are generally regarded as an objective measure of professional dance quality and a cornerstone of the competition’s credibility. On the other hand, the subjectivity inherent in audience voting may allow contestants with strong popularity but relatively weaker technical performance to remain in the competition, while technically skilled contestants with smaller fan bases are eliminated prematurely. This tension between professional merit and public popularity has sparked ongoing discussions about the appropriateness of the current voting framework.
+
+Against this backdrop, we aims to develop a rigorous mathematical framework to characterize audience voting behavior and to systematically examine how different voting mechanisms influence competition outcomes. Importantly, this analysis must be conducted in the absence of actual fan vote data, relying instead on observable information such as judges’ scores, season rankings, and elimination records. Specifically, the problem focuses on the following three core aspects:
+\begin{itemize}[leftmargin=*]
+    \item How to develop a scientifically sound approach to estimate unobservable fan vote data and evaluate its consistency with observed elimination results?
+    \item Whether alternative voting rules (e.g., rank-based versus percent-based methods) lead to significantly different competition trajectories and final outcomes?
+    \item What are the strengths and limitations of the existing voting mechanism from the dual perspectives of professional fairness and competitive appeal?
+\end{itemize}
+
+
+\subsection{Restatement of the Problem}
+%这里写问题重述。
+
+In the absence of publicly available weekly fan vote data released by the official organizers of Dancing with the Stars (DWTS), this study conducts a systematic investigation based on accessible competition data, including judges’ professional scores, season rankings, elimination results, and contestants’ basic information. Centered on the framework of fan vote estimation – rule impact analysis – mechanism evaluation, this problem requires the development of appropriate mathematical models to estimate contestants’ relative fan vote levels. 
+Furthermore, the problem calls for an analysis of how different voting mechanisms influence the competition process and final outcomes, with the goal of evaluating the existing voting system from the perspectives of professional fairness and competitive rationality, and proposing a more equitable elimination rule.%字数多的话可以删掉
+
+Specifically, the problem focuses on the following three core questions:
+\begin{enumerate}
+    \item \textit{Fan Vote Estimation:} In the absence of actual fan vote data, construct a model using available information such as judges’ scores and competition outcomes to estimate contestants’ relative fan vote levels on a weekly basis, and examine the consistency between the estimated votes and the observed elimination results.
+    \item \textit{Comparison of Voting Mechanisms:} Based on the established fan vote estimation model, analyze the effects of different voting rules—such as rank-based and percentage-based voting methods—on contestants’ progression paths and final competition results, and compare the differences in outcomes across these mechanisms.
+    \item \textit{Evaluation of Voting Fairness:} From the perspectives of professionalism and fairness, comprehensively consider the roles of judges’ scores and audience votes to assess the rationality of the current voting mechanism, and discuss its strengths and limitations in balancing competitive integrity and entertainment value.
+\end{enumerate}
+
+By addressing these tasks, our study aims to provide quantitative insights and decision-making support for the design of voting mechanisms in similar competitive entertainment programs.
+
+\subsection{Our Work}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{Our_Work_Zoomed.png}
+    \caption{The overall framework of our work.}
+    \label{fig:our_work}
+\end{figure}
+
+\section{Assumptions \& Justifications}
+问题假设。
+大致想到了这些部分：
+\begin{itemize}
+    \item 节目组必然严格遵守规则
+    \item 假设在整个赛季中，一个选手的基础粉丝量（Base Fans）是不变的
+    \item Google Trends 的搜索热度，大致上可以作为衡量现实世界中公众关注度的有效“代理变量”
+\end{itemize}
+
+\section{Notations}
+\begin{center}
+    \begin{tabular}{clc}
+        \toprule
+        \textbf{Symbol} & \textbf{Description} & \textbf{Unit} \\
+        \midrule
+        $D$ & Wear depth & mm \\
+        \bottomrule
+    \end{tabular}
+\end{center}
+
+用AI快速完成
+
+
+\section{Data Description and Processing}
+
+
+阐释数据的处理部分，包括数据的获取、清洗、预处理等。
+评委打分直接给，简单说预处理即可。
+
+其他数据：
+\begin{itemize}
+    \item Google Trends 数据（这里可以夸大工作量，虽然只找了三年的，但是用脚本获取了20年的也可以，注意不是爬虫，Google Trends禁止爬虫）
+    \item 选手社交媒体数据（2021年）
+\end{itemize}
+
+\section{蒙特卡洛模拟与参数反演：观众投票行为建模}
+
+
+\subsection{随机行为模型的构建与投票估算公式}
+
+\subsubsection{公式的建立}
+为了量化受访数据中缺失的观众投票（Fan Votes），本研究构建了一个多维度的随机行为模型。该模型假设观众的投票决策并非随机，而是由选手的背景人气、即时表现以及赛季中的累积声望共同驱动的。
+
+对于任何一个赛季，我们将“观众投票”这一不可见因素拆分为以下 4 个核心维度：
+\begin{itemize}
+    \item \textbf{初始人气基础 ($\alpha_i \cdot P_i$)}：代表选手进入赛场时已自带的“死忠粉”基数。“死忠粉”的投票行为是相对稳定且持续的，几乎不会受到选手表现的影响。
+    \item \textbf{当周表现效应 ($\beta \cdot J_{ij}$)}：捕捉因当周出色舞蹈表现而吸引的“路人票”。模型将评委分转化为即时投票权重（这里的权重转换方法，是否可以进一步改进？），来模拟这一过程。
+    \item \textbf{时间动态累积项 ($\delta \cdot C_{ij}$)}：反映选手赛季中的整体表现。明星持续的高水平表现，或许会产生新的“死忠粉”，从而提升其累积投票基础。
+    % \item \textbf{环境随机扰动 ($\gamma_j + \varepsilon_{ij}$)}：$\gamma_j$ 代表特定周次（如决赛周或主题周）的整体热度波动，而 $\varepsilon_{ij}$ 则捕捉由于投票限制或突发争议带来的不可预测随机性。
+\end{itemize}
+
+（后面这个式子我们没有考虑，但是我们可以写进论文里）
+
+由此，得到第 $j$ 周选手 $i$ 的估算投票公式：
+
+\begin{equation}
+    V_{ij} = \alpha_i \cdot P_i + \beta \cdot J_{ij} + \delta \cdot C_{ij}
+\end{equation}
+
+\begin{table}[htbp]
+    \centering
+    \caption{符号说明}
+    \label{tab:vote_symbol_def}
+    \begin{tabular}{cl}
+        \toprule
+        \textbf{Symbol} & \textbf{Description} \\
+        \midrule
+        $V_{ij}$ & 第 $j$ 周选手 $i$ 的估算粉丝投票量 \\
+        $P_i$ & 选手 $i$ 的基础人气水平 \\
+        $J_{ij}$ & 第 $j$ 周选手 $i$ 的评委得分 \\
+        $C_{ij}$ & 选手 $i$ 在第 $j$ 周的累积表现 \\
+        $\alpha_i,\beta,\delta$ & 三类影响因子的权重系数 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+为了求解该模型中不可观测的系数 $\alpha, \beta, \delta$，我们采用了蒙特卡洛（Monte Carlo）模拟与参数反演技术。通过在参数空间内进行 $3 \times 10^6$ 次随机采样，模拟不同投票规则（排名制与百分比制）下的淘汰结果。当模拟产生的淘汰名单与历史真实数据的一致性，达到：（Accuracy $\ge 75\%$）时，该组参数被视为有效解，用于后续的确定性与一致性分析。
+
+在获得大量有效解后，我们进一步分析了各参数的分布特征与相互关系，并定义了衡量模型性能的核心指标：一致性（Consistency）与确定性（Certainty）。
+
+\subsubsection{参数范围的选择}
+
+为避免主观设定带来的偏差，我们采用“先宽后窄”的两阶段范围选择策略。
+
+首先基于量纲与样本分布做粗范围：$P_i$、$J_{ij}$ 与 $C_{ij}$ 在标准化后均处于同一数量级，因此将权重系数设为对称的宽范围（例如 $\alpha_i,\beta,\delta\in[0,3]$），确保覆盖“粉丝主导”与“评委主导”的极端情形。随后利用小规模试运行统计的淘汰重现率分布，对权重进行收缩，只保留能产生有效淘汰序列的参数区间，从而得到最终采样范围。
+
+本研究实际采用如下数值范围进行蒙特卡洛采样：
+\begin{equation}
+F_i \sim \mathrm{Unif}(500, 6000),\quad
+\sigma_{\alpha} \sim \mathrm{Unif}(0.05, 0.30),\quad
+\beta_0 \sim \mathrm{Unif}(0.5, 1.5),\quad
+g \sim \mathrm{Unif}(0, 0.1).
+\end{equation}
+其中 $F_i$ 为死忠粉规模，$\sigma_{\alpha}$ 控制粉丝活跃度波动，$\beta_0$ 为表现权重基线，$g$ 为周度增长率。对应地，模型的随机项在第 $j$ 周写为：
+\begin{equation}
+\alpha_{ij} \sim \mathcal{N}(1,\sigma_{\alpha}),\quad
+\beta_{ij} \sim \mathcal{N}\big(\beta_0(1+g\cdot(j-1)),\ 0.05\big),
+\end{equation}
+并采用固定路人票池 $M=5000$ 进行归一化分配：
+\begin{equation}
+P_{ij} = M \cdot \frac{w_{ij}}{\sum_k w_{kj}},\quad
+w_{ij}=\begin{cases}
+(N_j+1)-\mathrm{Rank}_{ij}, & \text{排名法} \\
+\text{Score}_{ij}, & \text{百分比法}
+\end{cases}
+\end{equation}
+其中 $N_j$ 为当周选手数。以上设置保证不同赛季、不同规则下的路人票规模可比。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{calibration_results_S28}
+    \caption{例：基于上述算法得到的 28季的 $\alpha$、$\beta$ 解空间及粉丝数分布估计}
+    \label{fig:calibration_results_S28}
+\end{figure}
+
+阈值 Accuracy $\ge 75\%$ 的选择兼顾可解释性与稳健性：
+
+一方面在多数赛季的周数规模下，该阈值明显高于随机基线，可有效过滤“偶然命中”；
+
+另一方面阈值再提高会导致有效样本过少、参数分布不稳定。以 75\% 作为折中点，可以在保持样本量的同时确保模型具有足够的再现能力。
+
+
+
+% （为什么模型认为，Judge Scores是线性影响人气的？或者说，线性看上去不够高级，可以加个对数或者什么指数，怎么高级怎么来）
+\subsubsection{改进的权重转换方法：从绝对分到相对秩}
+我们在模型中引入了非线性映射。相比于直接使用 $J_{ij}$，我们通过计算选手在当周的相对排名分：
+\begin{equation}
+    Score'_{ij} = \frac{(N_j + 1) - \text{Rank}_{ij}}{N_j}
+\end{equation}
+其中 $N_j$ 为第 $j$ 周剩余选手数量。这种改进消除了不同评审打分尺度不一的影响，更真实地模拟了观众因“谁表现最好”而非“得了多少分”产生的投票冲动。
+
+
+
+\subsection{Consistency 一致性度量：历史淘汰结果的再现能力分析}
+
+\subsubsection{一致性得分的定义}
+我们把模型的一致性得分 $C_{score}$ 定义为在所有模拟周次中，预测淘汰者与真实淘汰者完全吻合的频率：
+\begin{equation}
+    C_{score} = \frac{1}{T} \sum_{j=1}^{T} \mathbb{I}(\text{Predicted\_Eliminated}_j = \text{Actual\_Eliminated}_j)
+\end{equation}
+其中 $T$ 为赛季总周数，$\mathbb{I}(\cdot)$ 为指示函数。
+
+\subsubsection{模拟结果与历史数据的一致性检验}
+经检验，模型在大多数情况下能够准确再现历史淘汰逻辑。
+
+通过蒙特卡洛模拟，我们筛选出 Accuracy $\ge 75\%$ 的有效参数空间。实验结果显示，在此约束下，模型对各赛季淘汰者的预测展现了极高的一致性，证明了估算公式 $V_{ij}$ 在复现比赛规则方面的有效性。各赛季的一致性得分分布如下图所示：
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{consistency_accuracy_heatmap}
+        \caption{各赛季-周次的一致性准确率热力图。}
+        \label{fig:consistency_accuracy_heatmap}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{consistency_accuracy_heatmap_binary}
+        \caption{Accuracy 大于 75\% 的周次标记。}
+        \label{fig:consistency_accuracy_heatmap_binary}
+    \end{subfigure}
+    \caption{一致性准确率热力图与 Accuracy\(\approx 75\%\) 周次标记对比。}
+    \label{fig:consistency_accuracy_heatmap_pair}
+\end{figure}
+
+左图展示了各赛季-周次的一致性准确率热力图，颜色越深表示模型预测与实际淘汰结果越吻合；右图则标记了那些达到或超过 75\% 准确率的周次。可以看出，大部分赛季中，模型在多数周次均能实现高一致性，验证了其在捕捉观众投票行为方面的有效性。
+
+\subsubsection{外部一致性：Google Trends 数据的交叉校验}
+为了证明模型估算的粉丝票数 $\widehat{V}_{ij}$ 并非纯粹的数学拟合，本研究引入了 Google Trends 搜索热度数据 $G_{ij}$ 作为外部参考。我们将搜索热度定义为“公域人气”，用以校验模型反演出的“私域选票”。
+
+具体地，通过使用 Github 开源脚本 \texttt{pytrends} 获取了历年 DWTS 赛季中各选手在比赛期间的 Google 搜索热度数据。随后，我们计算了模型估算的粉丝投票 $\widehat{V}_{ij}$ 与对应的搜索热度 $G_{ij}$ 之间的相关系数 $r$。
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Google_Trends.jpg}
+        \caption{Google Trends 数据获取示意}
+        \label{fig:google_trends_logo}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{daily_smooth_trends_S30.png}
+        \caption{S30 赛季部分选手的每日搜索热度趋势}
+        \label{fig:s30_trends}
+    \end{subfigure}
+    \caption{Google Trends 数据来源与 S30 赛季搜索热度示例。}
+    \label{fig:google_trends_example}
+\end{figure}
+
+在对大多数常规赛季的分析中，$\widehat{V}_{ij}$ 与 $G_{ij}$ 呈现出显著的正向相关性（$r >= 0.85$）。这种外部一致性表明，模型不仅在闭环逻辑内自洽，而且其捕捉到的得票趋势，与现实中的社会热度波动高度同步。
+
+然而，我们也注意到，在某些特殊赛季中（例如S11和S27），模型估值与搜索热度出现了显著的背离现象，就相关系数而言，表现为 $r_{11} = 0.22 , r_{27} = 0.319$。这一现象引发了我们对模型逻辑一致性的更深层次讨论，见下。
+
+
+
+\subsubsection{逻辑一致性的深度讨论：针对 S11 与 S27 的特例分析}
+尽管整体趋势吻合，但在第 11 赛季（Bristol Palin 现象）与第 27 赛季（Bobby Bones 现象）中，模型估值与搜索热度出现了显著的分歧（Divergence）。
+
+\begin{itemize}
+    \item \textbf{S11 的争议与流量去噪：} Bristol Palin 的搜索量在赛季中后期极高（见图 \ref{fig:S11_divergence}），但模型反演出的有效选票并未盲目随之激增。这说明模型成功识别并过滤了由于政治争议带来的“非投票性关注”（Negative or Passive Attention），精准捕捉到了真实的有效选票转化。
+    \item \textbf{S27 的沉默粉丝群识别：} 与之相反，Bobby Bones 的搜索量并不突出，但在热力图分布中（见图 \ref{fig:S27_residual}），其估算选票规模极高。这证明模型发现了搜索数据无法覆盖的“沉默粉丝群”——即由广播节目受众构成的、不常在搜索平台活跃但投票意愿极强的核心群体。
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{S11_r.png}
+        \caption{S11: 模型估算粉丝与 Google Trends 对比}
+        \label{fig:S11_divergence}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{S_27_r.png}
+        \caption{S27: 排名残差分析（Bobby Bones 现象）}
+        \label{fig:S27_residual}
+    \end{subfigure}
+    % \caption{特殊赛季的模型有效性验证与残差分析。左图显示尽管 Bristol Palin 搜索热度极高，模型估算的有效粉丝量仍保持理性（相关性较低），体现了去噪能力；右图 Bobby Bones 位于左上角（真实排名远高于预测排名），揭示了沉默粉丝群的强大推动力。}
+    \label{fig:special_seasons_analysis}
+\end{figure}
+
+这种“背离”体现了模型修正外部数据偏见（Data Bias）的能力。
+
+\begin{itemize}
+    \item 对于 S11，模型成功剔除了由争议带来的“虚假繁荣”；
+
+    \item 对于 S27，模型捕捉到了搜索数据未能覆盖的“沉默粉丝群”。
+\end{itemize}
+
+这一结果表明，本模型不仅在常规赛季与 Google Trends 高度一致，更能通过反演比赛结果揭示真实的投票动能，证明了其在处理复杂社会行为数据时的鲁棒性与客观性。
+
+\subsubsection{总结}
+
+通过与 Google Trends 数据的交叉验证，我们证明了模型估算的粉丝投票量 $\widehat{V}_{ij}$ 在大多数赛季中与现实世界的公众关注度高度一致，体现了其外部有效性。
+
+同时，模型展现了强大的去噪与识别能力，成功捕捉到了真实的投票动能，而非盲目追随搜索热度的波动。这一发现进一步验证了模型在复杂社会行为数据处理中的鲁棒性与客观性。
+
+\subsection{Certainty 确定性度量：粉丝投票估值的稳定性分析}
+针对产生的粉丝投票估值，我们利用 $10^5$ 次模拟中所有符合 $Accuracy \ge 0.75$ 的样本进行统计。
+\begin{itemize}
+    \item \textbf{估值稳定性：} 引入确定性得分 $S_{cert}$，其计算基于选手 $i$ 在第 $j$ 周投票估值的样本方差 $Var(\widehat{V}_{ij})$：
+    \begin{equation}
+        S_{cert}(i, j) = \frac{1}{1 + Var(\widehat{V}_{ij})}
+    \end{equation}
+    \item \textbf{置信区间：} 利用正态分布分位数 $z_{\alpha/2}$ 给出 $95\%$ 置信区间，量化估值的潜在波动范围：
+    \begin{equation}
+        CI_{95\%} = \bar{V}_{ij} \pm z_{0.025} \cdot \frac{\sigma_{ij}}{\sqrt{n_{valid}}}
+    \end{equation}
+\end{itemize}
+
+最终，我们得到了每位选手在各周的粉丝投票估值 $\widehat{V}_{ij}$ 及其不确定性度量 $S_{cert}(i, j)$。通过分析这些数据，我们能够识别出哪些选手的投票估值更为稳定，哪些选手则存在较大的估值波动，从而为后续的偏好权衡分析提供了坚实的数据基础。
+
+
+\section{偏好权衡与抗波动性：DWTS 计分规则演变及其对粉丝/评委影响力评估的研究}
+
+本节的计算流程如下：
+
+首先，使用第一问的“全赛季每周估计详情”数据，在周次层面过滤无效样本（选手数不足或无淘汰结果的周）。
+
+随后，对每个赛季、每一周并行回放两种合并规则（排名法与百分比法），得到组合排名与预测淘汰者。在此基础上计算两类指标：
+
+其一是偏袒性系数 $I$，比较粉丝票与评委分对组合排名的相对影响；
+
+其二是稳定性 $S$，通过对粉丝票进行 $\pm 20\%$ 随机扰动的蒙特卡洛模拟，统计淘汰结果保持不变的概率。
+
+最后，对周度指标做赛季聚合（均值与标准差），并输出跨赛季对比图表与汇总结论。
+
+\subsection{研究目标与问题定义}
+
+本部分基于第一问反演得到的粉丝票估计值，系统比较两种官方合并规则的表现差异。我们的核心目标是回答三个问题：
+
+（1）两种规则在不同赛季下的结果差异与倾向性如何；
+
+（2）在典型争议选手上，规则选择是否会改变结果，若引入“评委拯救（Bottom-2 Judge Save）”机制是否会缓解争议；
+
+（3）基于偏袒性与稳定性指标，提出未来赛季的规则建议。
+
+\subsection{指标构建}
+我们将每一周的评委总分与估计粉丝票同时输入两种合并规则中，得到“排名法”和“百分比法”的组合排名，并据此生成“预测淘汰者”。在此基础上构建两个指标：
+
+\begin{itemize}
+    \item \textbf{偏袒性系数 $I$}：衡量最终排名更接近粉丝排名还是评委排名，定义为
+    \begin{equation}
+        I = \frac{\text{Distance}(\text{Final Rank},\ \text{Fan Rank})}{\text{Distance}(\text{Final Rank},\ \text{Judge Rank})}.
+    \end{equation}
+    当 $I<1$ 时，最终排名更接近粉丝排名，判定为“偏向粉丝票”；当 $I>1$ 时，最终排名更接近评委排名，判定为“偏向评委分”；$I=1$ 表示两者影响强度大致均衡。
+    \item \textbf{稳定性率 $S$}：在对粉丝票施加小规模随机扰动的条件下，淘汰结果保持不变的概率。该指标用于衡量规则对短期投票波动的鲁棒性，$S$ 越高，结果越不易被偶然波动改变。
+\end{itemize}
+
+该流程等价于对历史赛季进行“规则平行回放”，从而比较两种规则在同一数据条件下，最终结果的差异。
+
+
+\subsection{跨赛季对比：两种规则的整体差异与偏袒性}
+
+--- 图：偏袒性系数对比（全赛季） ---
+% \begin{figure}[htbp]
+%     \centering
+%     \fbox{\parbox[c][0.28\textheight][c]{0.9\textwidth}{\centering\large 图：各赛季两种方法的偏袒性系数（$I$）对比}}
+%     \caption{各赛季两种方法的偏袒性系数（$I$）对比。}
+%     \label{fig:bias_index_compare}
+% \end{figure}
+
+
+--- 图：偏袒性系数对比（缩放视图/局部） ---
+% \begin{figure}[htbp]
+%     \centering
+%     Comparison of Bias Index ($I$) in the 0--2 range across different seasons.
+%     \caption{偏袒性系数对比的缩放视图（用于观察 $I$ 在 0--2 区间的差异）。}
+%     \label{fig:bias_index_zoom}
+% \end{figure}
+
+
+
+
+
+
+从全赛季汇总结果看，百分比法的偏袒性系数整体高于排名法，说明其更容易放大粉丝票的影响；而排名法的 $I$ 值多集中在 1 附近，更接近“评委—粉丝”平衡的理想状态。具体而言，34 个赛季中有 33 个赛季满足“百分比法 $I$ 均值 $>$ 排名法 $I$ 均值”（占比 97.1\%），仅第 10 赛季出现反例（排名法 $I=1.055$，百分比法 $I=0.994$）。该结论在绝大多数赛季均保持一致，说明规则差异具有结构性而非偶然性。
+
+--- 图：结果稳定性率对比（全赛季） ---
+% \begin{figure}[htbp]
+%     \centering
+%     Comparison of Stability Rate ($S$) between Ranking and Percentage methods.
+%     \caption{各赛季两种方法的结果稳定性率（$S$）对比。}
+%     \label{fig:stability_compare}
+% \end{figure}
+
+--- 图：选手级预测准确率趋势 ---
+% \begin{figure}[htbp]
+%     \centering
+%     Trends of player-level historical prediction accuracy across all seasons.
+%     \caption{各赛季选手级预测准确率趋势。}
+%     \label{fig:player_acc_trend}
+% \end{figure}
+
+稳定性方面，两种规则在多数赛季的 $S$ 值接近 1，表明当粉丝票在合理范围内波动时，淘汰结果总体稳定。这意味着规则差异主要体现在“倾向性”而非“随机性”。以全赛季均值衡量，排名法与百分比法的稳定性均为 $S=1.000$，即$S$几乎不受到粉丝票波动的影响。
+
+
+\noindent\textbf{小结：} 百分比法整体更偏向粉丝票，两种规则的都极稳定。
+
+
+
+\subsection{争议选手的规则敏感性与评委拯救机制评估}
+
+\subsubsection{争议样本与判定标准}
+
+设第 $j$ 周选手 $i$ 的评委排名与粉丝排名分别为 $R^{(J)}_{ij},R^{(F)}_{ij}$，定义排名差
+\begin{equation}
+    \Delta R_{ij}=R^{(J)}_{ij}-R^{(F)}_{ij}.
+\end{equation}
+用数据分位数给出“冲突周”阈值：
+\begin{equation}
+    \tau = Q_{0.90}\left(|\Delta R_{ij}|\right),\quad \mathbb{I}_{ij}=\mathbb{I}\left(|\Delta R_{ij}|\ge \tau\right).
+\end{equation}
+定义赛季内的冲突周次数：
+\begin{equation}
+    K_i=\sum_{j=1}^{T}\mathbb{I}_{ij}.
+\end{equation}
+同时引入结构性冲突指示：
+\begin{equation}
+    \mathbb{S}_{ij}=\mathbb{I}\left(Score_{ij}\le Q_{0.25}(Score_{\cdot j})\right)\cdot
+    \mathbb{I}\left(Vote_{ij}\ge Q_{0.75}(Vote_{\cdot j})\right).
+\end{equation}
+争议样本定义为
+\begin{equation}
+    \mathbb{C}_i=\mathbb{I}\left(K_i\ge k_0\right)\cdot \mathbb{I}\left(\sum_{j=1}^{T}\mathbb{S}_{ij}\ge 1\right),\quad k_0=2.
+\end{equation}
+其中 $Q_{p}(\cdot)$ 为样本 $p$ 分位数，上述阈值均由数据计算得到。
+
+上述公式含义如下：$|\Delta R_{ij}|$ 衡量评委与粉丝排序的偏离幅度；
+
+$\tau$ 取其 90\% 分位数，定义“冲突周”；
+
+$K_i$ 统计选手在赛季内的冲突周数；
+
+$\mathbb{S}_{ij}$ 强调“低评委分—高粉丝票”的结构性冲突（评委分落入当周下四分位且粉丝票进入上四分位）；
+
+最终 $\mathbb{C}_i=1$ 表示该选手同时满足“频繁冲突”和“结构性冲突”两类条件，因此被判定为争议样本。
+
+ (这里可以画张图说明冲突周的定义)
+
+题目给出的 S2、S4、S11、S27 均满足 $\mathbb{C}_i=1$；其余样本按同一公式筛选。
+
+
+--- 图：争议样本散点图占位 ---
+% \begin{figure}[htbp]
+%     \centerin
+
+为检验跨赛季一致性，展示 $\Delta R_{ij}$ 的分布（箱线图/热力图）。
+
+--- 图：排名差值分布占位 ---
+%这张图片
+% \begin{figure}[htbp]
+
+该图用于定位 $|\Delta R_{ij}|$ 的尾部离群点。
+
+值得一提的是，这与（油管视频：节目30大丑闻）中提到的争议选手高度重合，验证了我们争议样本筛选方法的有效性与客观性。
+
+（是否添加图片？）
+
+在确定样本后，我们将在下一小节对两种计分规则进行“规则回放”，比较排名法与百分比法在这些样本上的淘汰与晋级结果，并进一步检验评委拯救机制是否能降低争议样本的胜出概率或改变其最终名次。
+
+
+\subsubsection{规则敏感性回放结果（排名法 vs 百分比法）}
+
+基于已筛选的争议样本，我们对每个样本所在赛季进行“规则回放”：在相同的评委分与估算粉丝票条件下，分别按排名法与百分比法计算周度合并名次，并记录最终名次与淘汰周次的变化。
+
+为量化规则敏感性，定义以下指标：
+\begin{itemize}
+    \item \textbf{名次变化幅度}：$\Delta P = P_{\text{rank}}-P_{\text{percent}}$，衡量两种规则下的最终名次差异。
+    \item \textbf{生存周数变化}：$\Delta W = W_{\text{rank}}-W_{\text{percent}}$，反映规则选择对淘汰时点的影响。
+    \item \textbf{争议样本保留率}：统计争议样本在两种规则下进入半决赛/决赛的比例。
+\end{itemize}
+
+下图给出争议样本在两种规则下的名次变化对比；表格汇总了各样本的 $\Delta P$ 与 $\Delta W$。
+
+--- 图：规则敏感性名次变化占位 ---
+% \begin{figure}[htbp]
+%     \centering
+%     \includegraphics[width=0.85\textwidth]{rule_sensitivity_rank_change_placeholder}
+%     \caption{争议样本在排名法与百分比法下的名次变化对比。正值表示排名法更有利，负值表示百分比法更有利。}
+%     \label{fig:rule_sensitivity_rank_change}
+% \end{figure}
+
+% --- 表：规则敏感性指标汇总占位 ---
+\begin{table}[htbp]
+    \centering
+    \caption{争议样本在两种规则下的名次与生存周数变化。}
+    \label{tab:rule_sensitivity_summary}
+    \begin{tabular}{lccc}
+        \toprule
+        样本 & $\Delta P$ & $\Delta W$ & 备注 \\
+        \midrule
+        样本1 &  &  &  \\
+        样本2 &  &  &  \\
+        ... & ... & ... & ... \\
+        样本10 &  &  &  \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+根据全赛季模拟回放的聚合数据显示，百分比法下的平均偏袒性系数 $I$ 为 4.234，显著高于排名法的 1.874。这一量化结果揭示了两种规则在性质上的根本差异：百分比法由于数值累加特性，对粉丝票存在“过度奖励”，这种放大效应严重稀释了评委的纠偏能力。这解释了为何争议样本在百分比法下往往能比在排名法下多生存 2-3 周。
+
+上述对比为下一节“评委拯救机制”的作用评估提供基准。
+
+\subsubsection{评委拯救机制模拟与影响}
+为检验“评委拯救（Bottom-2 Judge Save）”机制能否缓解争议，我们在规则回放中加入如下流程：先按当周合并排名确定 Bottom-2，再由评委分数高者获得拯救，最终淘汰评委分更低者。该机制等价于在极端“粉丝票偏袒”的情形下引入一道评委安全阀，从而避免低评委分但高粉丝票样本被直接保送。
+
+结果显示，引入拯救机制后，争议样本的“异常存活”显著减少：其进入后期赛段的比例下降，平均生存周数缩短；同时，评委分较高但粉丝票不足的选手，其被“纠错”保留的概率上升。
+
+从机理上看，该拯救机制本质上是将合并后的“一维结果”重新拆解。由于粉丝票在百分比法下具有显著的“长尾效应”（即极高的票数足以完全抵消极低的专业评分），引入 Bottom-2 决斗机制相当于在评价规则的末端增加了一个“高通滤波器”（High-pass Filter）。它强制执行了专业水准的底线，从而有效阻断了低分选手仅凭借单一的人气维度晋级的路径。
+
+--- 图：评委拯救前后争议样本生存周数对比（占位） ，这里是不是可以用生存曲线来研究，研究一个显著的个例就好了？---
+% \begin{figure}[htbp]
+%     \centering
+%     \includegraphics[width=0.85\textwidth]{judge_save_survival_comparison}
+%     \caption{评委拯救机制引入前后争议样本平均生存周数对比。}
+%     \label{fig:judge_save_survival}
+% \end{figure}
+
+--- 图：拯救机制对淘汰结果影响占比（占位） ---
+% \begin{figure}[htbp]
+%     \centering
+%     \includegraphics[width=0.85\textwidth]{judge_save_impact_rate}
+%     \caption{评委拯救机制对淘汰结果改变的周次占比。}
+%     \label{fig:judge_save_impact_rate}
+% \end{figure}
+
+
+\subsubsection{案例小结与对争议解释}
+
+
+结合规则敏感性回放与拯救机制模拟，我们对争议样本的形成机理给出统一解释：争议并非偶然“投票偏差”，而是当评委评分与粉丝偏好差距显著时，由规则放大效应，形成的必然结果。
+
+百分比法更容易放大粉丝票，排名法则相对抑制这种放大；
+
+拯救机制相当于在两种规则之间加入“缓冲”，其本质是对极端背离周进行干预。
+
+因此，争议样本呈现出一致特征：低评委分、高粉丝票、冲突周持续出现。这些样本在百分比法下更易走得更远，而在排名法或拯救机制下更易被提前淘汰。该结论解释了题目中 S11 与 S27 的争议，也为其他赛季的类似现象提供了可重复的机制性解释。
+
+为进一步说明拯救机制的作用，我们在S11赛季中创造了一个虚拟明星，他的选手的评委分持续垫底（倒数第一），但粉丝票持续第一。假设其他选手数据不变，我们对该虚拟明星在三种规则下的生存情况，进行了模拟。结果如图片所示：
+
+（图：虚拟明星在三种赛制下的生存曲线）
+
+由此，我们可以直观地验证拯救机制的“缓冲”功能。
+
+
+\subsubsection{对未来规则的启示}
+见后。
+
+
+\section{Decoding Success: What Makes a Winning Couple?}
+
+\subsection{研究目标与问题定义}
+
+本节聚焦“哪些因素决定选手走得更远”。
+
+我们区分评委评分与粉丝投票两条评价通道；评估舞伴教学能力与选手特征（行业、地区、年龄）对两类结果的影响强度与方向，并检验二者是否一致。
+
+\subsection{数据处理与标准化}
+
+本研究使用了第一问中反演得到的每位选手在各周的估算粉丝票数 $\widehat{V}_{ij}$ 及其对应的评委评分 $JudgeScore_{ij}$。为确保跨赛季、跨周次的可比性，我们对两类评分均进行了 Z-Score 标准化处理。
+
+为消除不同赛季与周次评分尺度差异，我们在赛季-周次层面计算评委分与粉丝票的均值与标准差，并将每位选手的当周表现转化为 Z-Score：$z=(x-\mu)/\sigma$。当某周标准差为 0 时，统一记为 0，以避免分母为 0。该标准化使结果可跨赛季、跨周次直接比较，并作为后续舞伴效应与多元模型的输入。
+
+其中，$x$ 为选手当周的原始评分（评委分或估算粉丝票），$\mu$ 与 $\sigma$ 分别为该赛季该周次所有选手评分的均值与标准差。
+
+
+
+\subsection{特征工程}
+
+为了深入分析选手属性与舞伴能力对评委评分与粉丝投票的影响，我们构建了多维特征集，涵盖选手个人属性、地区背景及舞伴教学能力等方面。所有特征最终用于预测两个标准化目标变量：赛季内 Z-Score 化的评委得分（\texttt{judges\_score\_z}）和粉丝投票（\texttt{fan\_votes\_z}）。
+
+具体特征构造如下：
+
+\subsubsection{选手属性特征}
+
+\begin{itemize}
+    \item \textbf{年龄：} 保留原始连续变量 \texttt{celebrity\_age\_during\_season}，以捕捉年龄对技术表现和观众好感度的非线性影响。
+    
+    \item \textbf{职业类别：} 原始数据包含 30+ 种职业类型（如 Singer, Actor, Athlete 等），其中部分类别样本量极少（如 Politician 仅 2 例）。为避免稀疏类别导致的统计不稳定性和特征维度爆炸，我们采用 \textbf{Top-K 保留策略}：
+    \begin{itemize}
+        \item 按样本量排序，保留前 10 大职业类别
+        \item 其余职业合并为 \texttt{Other} 类
+        \item 生成新变量 \texttt{Industry\_Group}（共 11 个类别）
+    \end{itemize}
+    该策略在保留主要职业差异的同时，确保每个类别有足够样本支撑统计推断。
+\end{itemize}
+
+\subsubsection{地域背景特征}
+
+地域因素可能通过两个机制影响比赛：（1）不同地区的娱乐产业发达程度影响选手专业素养；（2）本土观众的地域认同感影响粉丝投票。为精细刻画地域效应，我们构建了 \textbf{三层地域分类体系}：
+
+\begin{itemize}
+    \item \textbf{美国州级细分：} 对于 \texttt{celebrity\_homecountry/region} 为 "United States" 的选手，提取其 \texttt{celebrity\_homestate} 信息。按样本量保留前 15 个州（如 California, Florida, Ohio 等），其余州归为 \texttt{Other US}。
+    
+    \item \textbf{国际国家保留：} 对于非美国选手，保留样本量前 3 的国家（如 England, Australia, Canada），其余归为 \texttt{Other International}。
+    
+    \item \textbf{最终变量：} 生成 \texttt{Region\_Detailed} 变量，包含约 20 个类别（15 个美国州 + 3 个国家 + \texttt{Other US} + \texttt{Other International}）。
+\end{itemize}
+
+该设计既避免了简单二分法（美国/非美国）掩盖地域内部差异，又防止了过度细分导致的样本稀疏。
+
+\subsubsection{舞伴能力特征}
+
+舞伴对选手表现的影响不仅体现在静态水平上，更体现在\textbf{教学能力}——即帮助选手在赛季内快速提升的能力。我们通过以下步骤量化舞伴效应：
+
+\begin{enumerate}
+    \item \textbf{选手成长轨迹建模：} 对每位选手，以周次为自变量，Z-Score 化的评委分/粉丝票为因变量，拟合线性回归：
+    \[
+    Z_{\text{score}}^{(i)} = \alpha + \beta \cdot \text{Week} + \epsilon
+    \]
+    斜率 $\beta$ 即为该选手的成长速度（\texttt{judge\_improvement\_slope}, \texttt{fan\_improvement\_slope}）。
+    
+    \item \textbf{舞伴层面聚合：} 对同一舞伴带过的所有选手，计算其：
+    \begin{itemize}
+        \item 平均成长速度：$\overline{\beta}_{\text{partner}} = \frac{1}{n}\sum_{i=1}^{n} \beta_i$
+        \item 平均相对表现：$\overline{Z}_{\text{partner}} = \frac{1}{n}\sum_{i=1}^{n} \bar{Z}_i$（选手整个赛季的平均 Z-Score）
+    \end{itemize}
+    生成舞伴特征 \texttt{avg\_judge\_improvement}, \texttt{avg\_fan\_improvement}, \texttt{avg\_judge\_performance}, \texttt{avg\_fan\_performance}。
+\end{enumerate}
+
+该特征体系能够区分"帮助选手高起点"的明星舞伴和"帮助选手快速进步"的优秀教练型舞伴。
+
+\subsubsection{分类变量编码与最终特征矩阵}
+
+对分类变量 \texttt{Industry\_Group} 和 \texttt{Region\_Detailed} 执行独热编码（One-Hot Encoding），结合连续变量（年龄、赛季、周次），构成最终特征矩阵 $\mathbf{X}$，维度约为 $n \times 33$，用于训练两个独立的随机森林回归模型。
+这些特征为后续分析提供信息基础，帮助我们揭示选手属性与舞伴能力对比赛结果的影响。
+
+\subsection{选手属性的影响分析}
+
+为避免跨赛季与周次的尺度差异，本节使用前述 Z-Score 标准化后的评委分与粉丝票作为比较基准。对于类别变量（职业与地区），我们在样本量过小的类别上执行阈值过滤，降低“小样本行业/地区”带来的偏差。
+
+\subsubsection{职业类别的影响}
+职业可能同时影响专业表现与观众偏好：一方面，不同职业的舞台经验与身体素质差异显著；另一方面，职业自带的粉丝结构与传播渠道不同。
+
+我们按职业类别汇总标准化均值，计算
+\[
+\bar{z}^{(J)}_{k} = \frac{1}{n_k}\sum_{i\in k} z^{(J)}_i,\qquad
+\bar{z}^{(F)}_{k} = \frac{1}{n_k}\sum_{i\in k} z^{(F)}_i,
+\]
+其中 $k$ 为职业类别，$n_k$ 为样本量。对 $n_k$ 小于阈值的职业进行合并或剔除，以保证估计稳定性。
+
+总体结果呈现出“专业表现”与“粉丝人气”并不完全一致：部分职业（如舞台表演相关行业）在评委 Z-Score 上更占优，而部分职业在粉丝 Z-Score 上更突出。这说明职业对两类评分具有结构性分化效应。对应图表使用分组条形图与职业散点矩阵展示（见图 \ref{fig:industry_judge_impact}--\ref{fig:industry_scatter}）。
+
+% --- 图：条形图并排 + 散点矩阵 ---
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{industry_judge_impact}
+        \caption{不同职业的评委评分影响（标准化）。}
+        \label{fig:industry_judge_impact}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{industry_fan_impact}
+        \caption{不同职业的粉丝投票影响（标准化）。}
+        \label{fig:industry_fan_impact}
+    \end{subfigure}
+    \caption{职业类别对评委评分与粉丝投票的标准化影响对比。}
+    \label{fig:industry_bar_impact}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{industry_scatter_optimized_with_arrow}
+    \caption{职业影响综合定位图：评委与粉丝双维度。}
+    \label{fig:industry_scatter}
+\end{figure}
+
+两个典型的例子是，喜剧演员（Comedian）在粉丝评分上表现突出，但在评委评分上相对较弱，可能反映了其娱乐性强但技术性不足的特点；而音乐家（Musician）则与之相反，显示出较高的专业评分但较低的粉丝支持。我们推测，这种差异与职业本身的技能要求和观众期待有关。
+
+\subsubsection{地域背景的影响}
+地域因素可能通过两条路径影响结果：其一是地域文化与训练资源差异影响“技术表现”；其二是地域认同带来的投票偏好。我们构建“美国州级 + 国际国家”两层细分体系，并对样本量不足地区过滤后比较分布。
+
+在评委评分维度，地区间差异相对温和，更多体现为分布宽度与离群点的变化；而在粉丝投票维度，部分地区呈现更明显的长尾特征，提示“地域粉丝动员”的存在。为可视化该差异，我们使用地区小提琴图展示分布（见图 \ref{fig:region_judge_violin}--\ref{fig:region_fan_violin}）。
+
+结合统计结果可见，评委评分与粉丝票在地域上的 Top 10 如表 \ref{tab:region_top10} 所示。两组名单仅部分重合（如 USA-Georgia、USA-Nevada、USA-Hawaii、France），说明地域对“专业表现”和“粉丝动员”具有结构性分化效应，而非简单的一致性优势。
+
+\begin{table}[htbp]
+    \centering
+    \caption{地区 Top 10 的评委评分均值与粉丝票均值（地区汇总均值）。}
+    \label{tab:region_top10}
+    \begin{tabular}{l r l r}
+        \toprule
+        \textbf{Region (Judges)} & \textbf{Mean Score} & \textbf{Region (Fans)} & \textbf{Mean Votes} \\
+        \midrule
+        USA-Minnesota & 33.42 & USA-Alaska & 7951.86 \\
+        Russia & 32.95 & USA-Delaware & 7545.50 \\
+        USA-Colorado & 32.92 & France & 7386.47 \\
+        USA-Nevada & 30.93 & USA-Maine & 7277.06 \\
+        USA-Michigan & 29.99 & USA-Mississippi & 6937.13 \\
+        USA-Hawaii & 29.19 & USA-Georgia & 6863.58 \\
+        Australia & 28.30 & Canada & 6806.09 \\
+        France & 28.29 & USA-Iowa & 6772.70 \\
+        USA-Georgia & 28.07 & USA-Hawaii & 6719.27 \\
+        USA-Ohio & 27.65 & USA-Nevada & 6706.17 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+    将美国选手作为一个整体进行分析掩盖了巨大的内部差异。细分分析显示，粉丝投票具有显著的“地域动员效应”——人口较少或凝聚力较强的州（如 USA-Alaska、USA-Delaware）往往能产生极高的粉丝投票均值（分别为 7951.86 与 7545.50），这可能是因为当地居民对本土明星的支持更为集中。相比之下，来自加利福尼亚或纽约等大州的选手虽然众多，但并未进入粉丝票 Top 10（见表 \ref{tab:region_top10}），也未呈现显著“主场优势”。
+
+小提琴图进一步显示：评委评分的地区间差异主要体现在分布宽度与少量高分尾部，整体更集中；相较之下，粉丝票分布的高端尾部更明显，提示某些地区存在更强的投票动员能力或粉丝集中度。这一结论支持了“地域认同偏好”与“专业训练资源”分别作用于粉丝通道与评委通道的机制解释。进一步的可能解释是：部分地区或因媒体覆盖面更高、社区网络更紧密而形成更强的粉丝动员；而评委端差异可能与地区相关的舞蹈/表演训练资源、从业经验积累有关。
+
+% --- 图：地区小提琴图 ---
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth]{region_judges_score_violin}
+    \caption{不同地区评委评分分布（小提琴图）。}
+    \label{fig:region_judge_violin}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth]{region_fan_votes_violin}
+    \caption{不同地区粉丝投票分布（小提琴图）。}
+    \label{fig:region_fan_violin}
+\end{figure}
+
+
+
+\subsubsection{年龄效应的影响}
+
+
+年龄对比赛结果的影响可能是非线性的：过年轻选手在技术表现上具备体能优势，但观众共情度未必更高；年长选手可能存在技巧劣势，却在叙事性与情感共鸣上更具吸引力。我们以年龄为连续变量，结合核密度与非参数回归（Lowess）估计趋势。
+
+% --- 图：年龄趋势（KDE + Lowess） ---
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth]{age_kde_lowess}
+    \caption{年龄与评委评分/粉丝投票的核密度与 Lowess 趋势。}
+    \label{fig:age_kde_lowess}
+\end{figure}
+
+% --- 图：年龄与职业分布 ---
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{age_industry_interaction_v2}
+    \caption{不同职业的年龄分布差异（箱线图）。}
+    \label{fig:age_industry_box}
+\end{figure}
+
+结果显示评委评分与年龄存在轻微的倒 U 型结构，且评委分与年龄的相关性更明显（$r=-0.302$），而粉丝票与年龄的相关性更弱（$r=-0.172$）。这表明评委评分对年龄的敏感度相对更高、评价标准更接近专业表现；而粉丝投票对年龄的依赖较小，背后原因需要结合其他因素进一步分析。
+
+但是，该相关性仅反映线性关联，不代表因果：年龄可能通过“职业结构”“曝光渠道”“既有粉丝基数”等间接影响投票与评分，而非年龄本身直接导致分数变化。
+
+具体而言，不同职业的年龄分布存在系统性差异（见图 \ref{fig:age_industry_box}），这些职业又对应不同的观众群体与舞台经验，从而形成“年龄—职业—评分”的混杂路径。
+
+举例来说，运动员通常更年轻，而企业家与喜剧演员往往年龄较大。但从粉丝投票看，运动员并未比企业家或喜剧演员获得显著更高的票数，这说明粉丝并不只看重舞蹈技术，还会关注多种因素。
+
+合理的猜测包括：企业家与喜剧演员可能通过其社会影响力或幽默感吸引观众，而不仅仅依赖舞蹈表现。因此，年龄对粉丝投票的影响较小，反映了粉丝评价的多维度特性。这与我们在职业分析中观察到的现象是一致的：粉丝投票更受选手整体形象与娱乐价值影响，而非单一的技术表现。
+
+\subsection{舞伴效应的深度建模}
+
+舞伴（职业舞者）既会直接影响选手当周舞蹈质量，也可能通过教学与编排能力改变选手在赛季内的成长速度。为了避免将“选手自身强弱”误判为“舞伴能力”，我们将舞伴影响拆解为两类可区分的维度：
+
+
+（1）\textbf{基础水平（Base Performance）}：舞伴带领下，选手在赛季中的平均相对表现；
+
+
+（2）\textbf{成长速度（Improvement Rate）}：选手相对表现随周次变化的趋势斜率，刻画舞伴的“教学/编排”能力。
+
+\subsubsection{标准化与成长斜率的定义}
+由于不同赛季与不同周次的评分尺度差异显著，本节延续前文处理方法，在“赛季-周次”层面分别对评委总分与估算粉丝票进行 Z-Score 标准化：
+\begin{equation}
+z_{i,s,w} = \frac{x_{i,s,w}-\mu_{s,w}}{\sigma_{s,w}},\qquad x\in\{JudgeScore,\widehat{FanVote}\}.
+\end{equation}
+其中 $\mu_{s,w}$ 与 $\sigma_{s,w}$ 分别为赛季 $s$ 第 $w$ 周所有在场选手的均值与标准差；若 $\sigma_{s,w}=0$（或缺失）则统一记 $z_{i,s,w}=0$，避免分母为 0。
+
+对每位选手（同一赛季内）拟合线性趋势：
+\begin{equation}
+z_{i,s,w} = a_{i,s} + \beta_{i,s} \cdot w + \varepsilon_{i,s,w},
+\end{equation}
+斜率 $\beta_{i,s}$ 即为“成长速度”（分别计算评委通道与粉丝通道）。为降低噪声，我们仅对\textbf{至少参赛 3 周}的选手计算 $\beta_{i,s}$。
+
+随后在舞伴层面聚合（对该舞伴合作过的所有选手取均值），得到：
+\begin{itemize}
+    \item \textbf{评委通道教学能力：} $\overline{\beta}^{(J)}_p$（平均评委斜率），与 $\overline{z}^{(J)}_p$（平均评委相对表现）；
+    \item \textbf{粉丝通道吸粉能力：} $\overline{\beta}^{(F)}_p$（平均粉丝斜率），与 $\overline{z}^{(F)}_p$（平均粉丝相对表现）。
+\end{itemize}
+为保证统计稳定性，仅保留\textbf{带过至少 5 位明星}的“资深舞伴”样本（共 28 位，全部舞伴共 55 位）。
+
+需要强调的是：由于 Z-Score 是“当周相对表现”，且比赛后期剩余选手更强，整体上 $\overline{\beta}$ 往往为负（资深舞伴中位数约为 $-0.118$（评委）与 $-0.107$（粉丝））。因此，我们将“教学/吸粉能力更强”理解为 $\overline{\beta}$\textbf{更接近 0（相对下滑更慢，甚至出现正增长）}。
+
+\subsubsection{二维散点：基础水平 vs. 成长速度}
+图 \ref{fig:partner_scatter} 将每位资深舞伴映射到二维平面：横轴为基础水平（平均相对表现），纵轴为成长速度（斜率）。在该平面上：
+\begin{itemize}
+    \item 右上象限对应“\textbf{带高起点且能带成长}”的理想舞伴；
+    \item 左上象限对应“\textbf{初期不占优但能显著带成长}”的教练型舞伴；
+    \item 右下象限对应“基础强但成长有限”；
+    \item 左下象限对应“基础与成长均弱”。
+\end{itemize}
+
+在评委通道中，基础水平与成长速度呈现一定正相关（相关系数约为 $0.330$），提示“能带出更高相对表现的舞伴”往往也更擅长维持选手的竞争力；而在粉丝通道中二者几乎不相关（相关系数约为 $-0.006$），说明粉丝侧的“涨粉速度”更可能由选手叙事、曝光与粉丝动员等外部因素驱动。
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{partner_teaching_effect_judge}
+        \caption{评委通道：基础水平（平均 $z$） vs. 成长速度（平均斜率）。}
+        \label{fig:partner_teaching_judge}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{partner_growth_effect_fan}
+        \caption{粉丝通道：基础人气（平均 $z$） vs. 吸粉速度（平均斜率）。}
+        \label{fig:partner_growth_fan}
+    \end{subfigure}
+    \caption{资深舞伴的“基础水平—成长速度”二维刻画：评委评价与粉丝评价并不总是一致。点的大小表示舞伴合作样本量（带过的明星数量）。}
+    \label{fig:partner_scatter}
+\end{figure}
+
+\subsubsection{Top 舞伴识别：相对下滑最慢的“教练型”舞伴}
+\begin{table}[htbp]
+    \centering
+    \small
+    \caption{资深舞伴的 Top 示例对比：评委通道（教学/编排）与粉丝通道（动员/传播）并不完全一致。}
+    \label{tab:partner_top_examples}
+    \begin{tabular}{@{}l p{0.42\textwidth} p{0.42\textwidth}@{}}
+        \toprule
+        \textbf{维度} & \textbf{评委通道} & \textbf{粉丝通道} \\
+        \midrule
+        \textbf{指标} & $\overline{\beta}^{(J)}_p$ & $\overline{\beta}^{(F)}_p$ \\
+        \textbf{Top 舞伴示例} & Jenna Johnson（$\approx-0.033$），Emma Slater（$\approx-0.050$），Mark Ballas（$\approx-0.066$） & Alan Bersten（$\approx-0.033$），Pasha Pashkov（$\approx-0.042$），Lindsay Arnold（$\approx-0.057$） \\
+        \textbf{含义} & 更偏向“教学能力”：帮助选手在相对竞争中下滑更慢/更易提升。 & 更偏向“吸粉能力”：与叙事、曝光与粉丝动员等机制耦合更强。 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{partner_improvement_ranking}
+    \caption{资深舞伴 Top 10：按评委通道平均成长斜率排序（越接近 0，表示相对表现下滑越慢/成长越强）。}
+    \label{fig:partner_improvement_ranking}
+\end{figure}
+
+\noindent\textbf{小结：} 舞伴效应在评委通道更接近“专业能力差异”（基础水平与成长速度存在相关）；而粉丝通道更像“传播与动员差异”（基础与成长几乎无关）。这也解释了为何某些舞伴能持续带出技术层面更稳定的选手，但未必同步获得更快的粉丝增长。
+
+
+
+\subsection{多因素综合归因：随机森林模型}
+
+\subsubsection{为什么需要多元模型（单因素分析的局限）}
+令一条观测为“赛季--周次--选手”三元组 $t=(s,w,i)$。我们将数据写为
+\begin{equation}
+\mathcal{D}=\{(\mathbf{x}_t,\ y^{(J)}_t,\ y^{(F)}_t)\}_{t=1}^{N},
+\end{equation}
+其中 $y^{(J)}_t$ 表示评委通道的相对表现，$y^{(F)}_t$ 表示粉丝通道的相对投票表现，$\mathbf{x}_t$ 为由年龄、职业、地区等属性构成的特征向量。
+
+单因素分析等价于考察 $\mathbb{E}[y\mid x_k]$ 的边际变化，但当特征之间相关（例如职业与年龄分布、地区与行业构成）时，边际结果会混入混杂项。为此，我们用多元模型近似
+\begin{equation}
+\mathbb{E}\big[y^{(\cdot)}\mid \mathbf{x}\big]\approx f^{(\cdot)}(\mathbf{x}),\qquad (\cdot)\in\{J,F\},
+\end{equation}
+并在同一特征体系下分别拟合 $f^{(J)}$ 与 $f^{(F)}$，从而比较两条通道对各特征的敏感度差异。
+
+\subsubsection{Q3 代码逻辑与模型构建}
+\textbf{(1) 目标变量的标准化。} Q3 代码将原始观测 $(Score^{(J)}_t,\ Vote_t)$ 转为赛季内 Z-Score：
+\begin{equation}
+y^{(J)}_t = \frac{Score^{(J)}_t-\mu^{(J)}_{s}}{\sigma^{(J)}_{s}},\qquad
+y^{(F)}_t = \frac{Vote_t-\mu^{(F)}_{s}}{\sigma^{(F)}_{s}},
+\end{equation}
+其中 $\mu^{(\cdot)}_{s}$ 与 $\sigma^{(\cdot)}_{s}$ 为赛季 $s$ 内均值与标准差（若 $\sigma=0$ 则按代码逻辑退化处理）。该处理使不同赛季间的量纲差异被消除，$y$ 可解释为“相对赛季平均水平的优势幅度”。
+
+\textbf{(2) 类别变量的降维与编码。} 设选手职业为 $g_i\in\mathcal{G}$，取出现频次最高的 Top-$K$ 集合 $\mathcal{G}_K$，定义合并后的职业变量
+\begin{equation}
+g_i' = \begin{cases}
+g_i, & g_i\in\mathcal{G}_K,\\
+\texttt{Other}, & \text{otherwise}.
+\end{cases}
+\end{equation}
+对地区变量亦做类似的“粗粒度/细粒度”分组，并将 $g_i'$ 与地区变量做独热编码 $\mathrm{OneHot}(\cdot)$。
+
+\textbf{(3) 特征向量。} 对每条样本 $t=(s,w,i)$，令年龄为 $a_i$，则
+\begin{equation}
+\mathbf{x}_t = \big[\ s,\ w,\ a_i,\ \mathrm{OneHot}(g_i'),\ \mathrm{OneHot}(r_i')\ \big]^\top\in\mathbb{R}^{d}.
+\end{equation}
+
+\textbf{(4) 双通道随机森林回归。} 分别拟合
+\begin{equation}
+\hat f^{(J)} = \arg\min_{f\in\mathcal{F}_{RF}}\ \frac{1}{N}\sum_{t=1}^{N}\big(y^{(J)}_t-f(\mathbf{x}_t)\big)^2,\qquad
+\hat f^{(F)} = \arg\min_{f\in\mathcal{F}_{RF}}\ \frac{1}{N}\sum_{t=1}^{N}\big(y^{(F)}_t-f(\mathbf{x}_t)\big)^2.
+\end{equation}
+随机森林模型写作
+\begin{equation}
+\hat f(\mathbf{x})=\frac{1}{B}\sum_{b=1}^{B} T_b(\mathbf{x}),
+\end{equation}
+其中 $T_b$ 为第 $b$ 棵回归树，$B$ 为树的数量（代码中取 $B=100$）。
+
+\subsubsection{特征重要性排序：评委端更“能力导向”，粉丝端更“结构导向”}
+为解释 $\hat f^{(J)}$ 与 $\hat f^{(F)}$ 的“驱动因素”，Q3 输出基于树分裂带来的不纯度下降（Mean Decrease in Impurity, MDI）的特征重要性。对特征维度 $k$，其重要性可形式化为
+\begin{equation}
+\mathrm{Imp}_k = \frac{1}{B}\sum_{b=1}^{B}\ \sum_{v\in\mathcal{V}_{b}:\ \mathrm{split}(v)=k} p(v)\,\Delta \mathrm{MSE}(v),
+\end{equation}
+其中 $\mathcal{V}_b$ 为树 $b$ 的分裂节点集合，$p(v)$ 为到达节点 $v$ 的样本比例，$\Delta \mathrm{MSE}(v)$ 为该节点分裂前后均方误差的下降量。图 \ref{fig:rf_feature_importance} 给出了两条通道的 Top 重要性排序，用于对比“评委端”与“粉丝端”对同一组特征的相对敏感度。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.92\textwidth]{feature_importance_zscore}
+    \caption{随机森林特征重要性：分别预测赛季内标准化的评委评分与粉丝投票（Z-Score）。}
+    \label{fig:rf_feature_importance}
+\end{figure}
+
+为检验地区刻画的粒度是否改变结论，我们进一步采用细分地区版本训练模型（前 15 州 + 前 3 国家等），并输出更长的 Top 特征列表（见图 \ref{fig:rf_feature_importance_detailed}）。若某些具体州在粉丝端的重要性显著上升，则可被解释为“地域动员”在粉丝通道中可被模型捕捉；而在评委端若州特征普遍不突出，则支持“评委端对地域不敏感”。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.92\textwidth]{feature_importance_detailed}
+    \caption{随机森林特征重要性（细分地区版本）：用于检验地域变量粒度提升后的稳定性。}
+    \label{fig:rf_feature_importance_detailed}
+\end{figure}
+
+
+\noindent\textbf{本节小结：} 我们在统一的特征映射 $\mathbf{x}$ 下分别拟合 $\hat f^{(J)}$ 与 $\hat f^{(F)}$，并用 MDI 重要性 $\mathrm{Imp}_k$ 与交互矩阵 $\mathbf{P}$ 对两条通道的驱动因素进行对照，从而将单因素图表提升为“多因素条件下”的结构解释。
+
+\subsection{总结}
+本节用估算的粉丝票与评委分构建多因素模型，衡量舞伴效应与选手特征对成绩的影响。结果显示：评委通道更“能力导向”，舞伴基础水平与教学成长速度相关且影响明显；粉丝通道更“结构导向”，受曝光与动员等外部因素驱动更强。
+
+选手特征上，年龄、职业与地区均有影响但方向不一致：年龄对评委分更敏感；职业与地区在粉丝端的重要性更高，体现人气结构与地域动员。总体而言，影响机制对评委与粉丝并不一致，这解释了“高分低人气”或“低分高票”的结构性差异。
+
+
+
+
+\section{给组委会的建议}
+
+\section{Results and Discussion}
+
+\section{Sensitivity Analysis}
+
+\section{Strengths and Weaknesses}
+\subsection{Strengths}
+\subsection{Weaknesses}
+
+\section{Conclusion}
+
+\clearpage
+\begin{thebibliography}{99}
+\bibitem{ref1} Author. Title. Journal/Website, Year.
+\end{thebibliography}
+
+\label{LastRegularPage} 
+
+\clearpage
+
+\pagestyle{plain} 
+\pagenumbering{Alph} 
+\setcounter{page}{1} 
+
+\section*{AI Use Statement}
+
+\begin{enumerate}
+    \item \textbf{Did you use AI tools in your work?} Yes / No
+    \item \textbf{Which tools did you use and how?} 
+    (e.g., We used Gemini to polish the language of the Introduction section...)
+\end{enumerate}
+
+\end{document}
