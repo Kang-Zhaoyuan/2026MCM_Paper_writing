@@ -550,22 +550,9 @@ where $Q_{p}(\cdot)$ is the $p$-quantile.
 
 \subsubsection{Rule Sensitivity Replay Results (Rank-based vs Percentage-based)}
 
-For each controversial sample's season, we perform rule replay: under the same judge scores and estimated fan votes, we compute weekly combined ranks by rank-based and percentage-based rules, and record final rank and elimination week changes.
+For each controversial sample's season, we perform rule replay: under the same judge scores and estimated fan votes, we compute weekly combined ranks by rank-based and percentage-based rules, and record changes in final rank ($\Delta P$) and survival weeks ($\Delta W$) for controversial samples.
 
-We define:
-\begin{itemize}
-	\item \textbf{Rank change magnitude}: $\Delta P = P_{\text{rank}}-P_{\text{percent}}$.
-	\item \textbf{Survival week change}: $\Delta W = W_{\text{rank}}-W_{\text{percent}}$.
-	\item \textbf{Controversial sample retention rate}: proportion of controversial samples reaching semifinal/final.
-\end{itemize}
-
-
-
-Aggregated replay results show that the average partiality coefficient $I$ under the percentage-based rule is 4.234, significantly higher than 1.874 for the rank-based rule. 
-
-This reveals a fundamental difference: the percentage rule over-rewards fan votes, diluting judges' corrective power. 
-
-The following table summarizes $\Delta P$ and $\Delta W$ for each sample.
+Aggregated replay results show that the average partiality coefficient $I$ under the percentage-based rule is 4.234, significantly higher than 1.874 for the rank-based rule. This reveals a fundamental difference: the percentage rule over-rewards fan votes, diluting judges' corrective power; samples like Bristol Palin also survive longer under the percentage rule (Table \ref{tab:rule_sensitivity_summary}).
 
 \begin{table}[htbp]
   \centering
@@ -589,11 +576,7 @@ The following table summarizes $\Delta P$ and $\Delta W$ for each sample.
 \end{table}
 
 \subsubsection{Judge Save Mechanism Simulation and Impact}
-To test the "Bottom-2 Judge Save" mechanism, we modify the replay process: identify the Bottom-2 by combined rank, save the higher judge score, and eliminate the lower. This acts as a professional safety valve under extreme fan bias.
-
-Results show Judge Save reduces abnormal survival of controversial samples: fewer reach late rounds, average survival weeks fall; meanwhile, high-judge/low-fan contestants are more likely to be retained.
-
-Mechanistically, Judge Save re-splits the one-dimensional combined result. Because the percentage rule has a strong long-tail effect (extremely high fan votes can offset very low judge scores), the Bottom-2 duel adds a high-pass filter, enforcing a professional floor and preventing low-score contestants from advancing solely on popularity.
+By implementing a "Bottom-2 Judge Save" as a professional safety valve, we identify the Bottom-2 by combined rank, save the higher judge score, and eliminate the lower. This mechanism enforces a professional floor by filtering extreme fan bias and preventing low-score contestants from advancing solely on popularity, while retaining high-judge/low-fan contestants more often (Figure \ref{fig:survival_comparison_virtual_star}).
 
 \begin{figure}[htbp]
 	\centering
@@ -693,18 +676,18 @@ We one-hot encode \texttt{Industry\_Group} and \texttt{Region\_Detailed}, combin
 To avoid scale differences across seasons/weeks, we use Z-scored judge and fan results. For categorical variables (occupation and region), we filter small sample categories.
 
 \subsubsection{Occupation Effects}
-Occupation analysis reveals a divergence in how judges and fans evaluate contestants. Stage-performance occupations (e.g., singers, dancers) consistently received higher judge scores, whereas entertainers like comedians and reality TV stars garnered significantly stronger fan support relative to their technical scores.
+Occupation analysis (Fig. 10 \& 11) reveals a clear divergence: skill-based roles (e.g., singers) excel in judge scores, while entertainers (e.g., comedians) leverage their appeal for higher fan support despite technical limits.
 
 \begin{figure}[htbp]
 	\centering
-	\begin{subfigure}[t]{0.48\textwidth}
+	\begin{subfigure}[t]{0.40\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{industry_judge_impact}
 		\caption{Occupation effects on judge scores (standardized).}
 		\label{fig:industry_judge_impact}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}[t]{0.48\textwidth}
+	\begin{subfigure}[t]{0.40\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{industry_fan_impact}
 		\caption{Occupation effects on fan votes (standardized).}
@@ -716,15 +699,13 @@ Occupation analysis reveals a divergence in how judges and fans evaluate contest
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=0.85\textwidth]{industry_scatter_optimized_with_arrow}
+	\includegraphics[width=0.7\textwidth]{industry_scatter_optimized_with_arrow}
 	\caption{Occupation impact map: judge vs fan dimensions.}
 	\label{fig:industry_scatter}
 \end{figure}
 
-Two typical examples: comedians perform well in fan votes but relatively weaker in judge scores, reflecting entertainment strength but technical limits; musicians show higher professional scores but lower fan support. This suggests occupation affects audience expectations and skill profiles.
-
 \subsubsection{Regional Background Effects}
-Regional background exhibited a stronger influence on fan votes than on judge scores (Table \ref{tab:region_top10}). We observed a ``regional mobilization effect'' in fan voting, where contestants from smaller or tightly-knit states (e.g., Alaska, Delaware) achieved disproportionately high average vote counts, suggesting concentrated local support. The top-10 lists overlap only partially (e.g., USA-Georgia, USA-Nevada, USA-Hawaii, France), indicating structural divergence between professional and fan channels rather than simple consistency.
+Regional background exhibited a stronger influence on fan votes than on judge scores (Table \ref{tab:region_top10}). Table 5 shows a ``regional mobilization effect'' where contestants from smaller, tight-knit states (e.g., Alaska) achieve higher fan votes, suggesting local identity influences fan behavior more than professional judge assessments (Fig. 12 \& 13).
 
 \begin{table}[htbp]
 	\centering
@@ -748,10 +729,6 @@ Regional background exhibited a stronger influence on fan votes than on judge sc
 	\end{tabular}
 \end{table}
 
-Treating U.S. contestants as a single group hides large internal differences. By contrast, contestants from large states like California or New York do not appear in the top 10 for fan votes and show no strong "home advantage."
-
-Violin plots further show that judge scores are more concentrated with small high-score tails, while fan votes have stronger high-end tails. This supports the mechanism that regional identity affects fan voting more, while professional performance depends on training resources and experience.
-
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=0.8\textwidth]{region_judges_score_violin}
@@ -767,7 +744,7 @@ Violin plots further show that judge scores are more concentrated with small hig
 \end{figure}
 
 \subsubsection{Age Effects}
-The relationship between age and scores was weakly negative and non-linear. Judge scores showed a slightly stronger correlation with age ($r=-0.302$) than fan votes ($r=-0.172$), indicating that technical assessment is more sensitive to this factor. This relationship is likely confounded by occupation, as different professions have distinct age distributions.
+Age shows a weak negative correlation with both judge scores ($r=-0.302$) and fan votes ($r=-0.172$), with technical assessment being slightly more sensitive (Fig. 14). This trend is likely confounded by occupation-specific age distributions (Fig. 15).
 
 \begin{figure}[htbp]
 	\centering
@@ -816,14 +793,6 @@ To ensure stability, we keep only partners who have coached at least 5 celebriti
 Because Z-scores are relative within each week and later weeks have stronger contestants, average $\overline{\beta}$ is often negative (median about $-0.118$ for judges and $-0.107$ for fans). Thus we interpret stronger teaching as $\overline{\beta}$ closer to 0 (slower decline or even positive growth).
 
 \subsubsection{2D Scatter: Base Performance vs Improvement Rate}
-Figure \ref{fig:partner_scatter} maps each senior partner to the 2D plane: x-axis is base performance (mean $z$), y-axis is improvement rate (mean slope). The quadrants represent:
-\begin{itemize}
-	\item Upper-right: \textbf{high baseline and strong growth}.
-	\item Upper-left: \textbf{low baseline but strong growth} (coach-type).
-	\item Lower-right: \textbf{high baseline, limited growth}.
-	\item Lower-left: \textbf{weak baseline and weak growth}.
-\end{itemize}
-
 In the judge channel, base performance and improvement rate show positive correlation (about $0.330$), suggesting that partners who deliver higher relative performance also maintain competitiveness. In the fan channel, the correlation is near zero ($-0.006$), indicating that fan growth is driven more by narrative and exposure.
 
 \begin{figure}[htbp]
@@ -854,28 +823,14 @@ To address confounding factors in univariate analysis, we employed a Dual-Channe
 and compare the two channels under identical inputs.
 
 \subsubsection{Q3 Model Construction}
-We standardize judge scores and fan votes within each season to remove scale differences and interpret outcomes as relative advantage:
-\begin{equation}
-y^{(J)}_t = \frac{Score^{(J)}_t-\mu^{(J)}_{s}}{\sigma^{(J)}_{s}},\qquad
-y^{(F)}_t = \frac{Vote_t-\mu^{(F)}_{s}}{\sigma^{(F)}_{s}},
-\end{equation}
-with degenerate handling when $\sigma=0$. Categorical variables are consolidated to reduce sparsity (e.g., top-$K$ occupations with an \texttt{Other} group), then encoded alongside season, week, and age to form $\mathbf{x}_t$. Using the same feature mapping for both channels, we fit separate random forest regressors:
-\begin{equation}
-\hat f^{(J)} = \arg\min_{f\in\mathcal{F}_{RF}}\ \frac{1}{N}\sum_{t=1}^{N}\big(y^{(J)}_t-f(\mathbf{x}_t)\big)^2,\qquad
-\hat f^{(F)} = \arg\min_{f\in\mathcal{F}_{RF}}\ \frac{1}{N}\sum_{t=1}^{N}\big(y^{(F)}_t-f(\mathbf{x}_t)\big)^2,
-\end{equation}
-with the ensemble predictor
-\begin{equation}
-\hat f(\mathbf{x})=\frac{1}{B}\sum_{b=1}^{B} T_b(\mathbf{x}),
-\end{equation}
-where $T_b$ is the $b$-th tree and $B=100$.
+We trained two separate Random Forest regressors on the unified feature set to predict the season-week standardized judge scores and fan votes, respectively.
 
 \subsubsection{Feature Importance Ranking: Judges are More "Ability-Oriented," Fans More "Structure-Oriented"}
 Q3 outputs feature importance based on mean decrease in impurity (MDI). For feature $k$:
 \begin{equation}
 \mathrm{Imp}_k = \frac{1}{B}\sum_{b=1}^{B}\ \sum_{v\in\mathcal{V}_{b}:\ \mathrm{split}(v)=k} p(v)\,\Delta \mathrm{MSE}(v),
 \end{equation}
-where $\mathcal{V}_b$ is the set of split nodes, $p(v)$ is sample proportion at node $v$, and $\Delta \mathrm{MSE}(v)$ is the MSE decrease. Figure \ref{fig:rf_feature_importance} compares the top features in both channels.
+where $\mathcal{V}_b$ is the set of split nodes, $p(v)$ is sample proportion at node $v$, and $\Delta \mathrm{MSE}(v)$ is the MSE decrease. We compare the top features across both channels.
 
 \begin{figure}[htbp]
 	\centering
