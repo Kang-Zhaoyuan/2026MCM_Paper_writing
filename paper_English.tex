@@ -11,6 +11,13 @@
 \setmainfont{Times New Roman}
 \setCJKmainfont[BoldFont=SimHei,ItalicFont=KaiTi]{SimSun}
 \setCJKmonofont{SimSun}
+
+
+\usepackage{indentfirst}      % 强制第一段也缩进
+\setlength{\parindent}{2em}   % 设置缩进距离（通常为 2em）
+\setlength{\parskip}{0pt}     % 设置段落间距为 0
+% ---------------------------------------
+
 \usepackage{graphicx}
 \usepackage{subcaption}
 \usepackage{float}
@@ -25,6 +32,7 @@
 \usepackage{enumitem}
 \usepackage{lastpage}
 \usepackage{listings}
+
 
 % (Hyperlinks disabled per requirements; remove hyperref/url to avoid clickable links)
 
@@ -137,24 +145,16 @@ Overall, this work provides a complete analytical framework for DWTS and similar
 
 \section{Introduction}
 \subsection{Problem Background}
+
+
 \textit{Dancing with the Stars (DWTS)} is a long-running television program that integrates professional dance competition with popular entertainment. In each season, celebrities from diverse professional backgrounds are paired with professional dancers and compete in an elimination-style format through weekly dance performances. A contestant's progression and eventual outcome in the competition are jointly determined by two core components: \textbf{professional judges' scores}, which evaluate dance technique, choreography, and artistic expression, and \textbf{audience votes}, which reflect public preferences.
 
-In contrast to the objectively quantified judges' scores, audience voting behavior is inherently subjective and multifaceted. It is influenced not only by a contestant's weekly dance performance, but also by their pre-existing popularity, fan base, emotional appeal, and various socio-demographic factors. However, the show's organizers do not disclose the detailed weekly voting data for individual contestants, releasing only final rankings and elimination outcomes. This lack of transparency creates a fundamental challenge for the quantitative analysis and systematic understanding of the voting mechanism.
-
-Throughout the show's history, persistent debates have emerged regarding the fairness and rationality of the DWTS voting system. On one hand, judges' scores are generally regarded as an objective measure of professional dance quality and a cornerstone of the competition's credibility. On the other hand, the subjectivity inherent in audience voting may allow contestants with strong popularity but relatively weaker technical performance to remain in the competition, while technically skilled contestants with smaller fan bases are eliminated prematurely. This tension between professional merit and public popularity has sparked ongoing discussions about the appropriateness of the current voting framework.
-
-Against this backdrop, we aim to develop a rigorous mathematical framework to characterize audience voting behavior and to systematically examine how different voting mechanisms influence competition outcomes. Importantly, this analysis must be conducted in the absence of actual fan vote data, relying instead on observable information such as judges' scores, season rankings, and elimination records. Specifically, the problem focuses on the following three core aspects:
-\begin{itemize}[leftmargin=*]
-	\item How to develop a scientifically sound approach to estimate unobservable fan vote data and evaluate its consistency with observed elimination results?
-	\item Whether alternative voting rules (e.g., rank-based versus percent-based methods) lead to significantly different competition trajectories and final outcomes?
-	\item What are the strengths and limitations of the existing voting mechanism from the dual perspectives of professional fairness and competitive appeal?
-\end{itemize}
+Because detailed voting data are not publicly released, the core methodological challenge is to infer audience behavior from observable scores and outcomes and then evaluate how alternative rules shape fairness and competitiveness.
 
 
 \subsection{Restatement of the Problem}
 
-In the absence of publicly available weekly fan vote data released by the official organizers of Dancing with the Stars (DWTS), this study conducts a systematic investigation based on accessible competition data, including judges' professional scores, season rankings, elimination results, and contestants' basic information. Centered on the framework of fan vote estimation – rule impact analysis – mechanism evaluation, this problem requires the development of appropriate mathematical models to estimate contestants' relative fan vote levels. 
-Furthermore, the problem calls for an analysis of how different voting mechanisms influence the competition process and final outcomes, with the goal of evaluating the existing voting system from the perspectives of professional fairness and competitive rationality, and proposing a more equitable elimination rule.
+Because weekly fan vote data are unavailable, this study uses observable competition data (judges' scores, rankings, eliminations, and contestant profiles) to estimate relative fan votes and to evaluate how voting rules affect outcomes and fairness, with the goal of proposing a more equitable mechanism.
 
 Specifically, the problem focuses on the following three core questions:
 \begin{enumerate}
@@ -163,49 +163,31 @@ Specifically, the problem focuses on the following three core questions:
 	\item \textit{Evaluation of Voting Fairness:} From the perspectives of professionalism and fairness, comprehensively consider the roles of judges' scores and audience votes to assess the rationality of the current voting mechanism, and discuss its strengths and limitations in balancing competitive integrity and entertainment value.
 \end{enumerate}
 
-By addressing these tasks, our study aims to provide quantitative insights and decision-making support for the design of voting mechanisms in similar competitive entertainment programs.
+By addressing these tasks, the study provides quantitative evidence to inform the design of voting mechanisms in similar competitions.
 
 \subsection{Our Work}
 
-\begin{figure}[htbp]
-	\centering
-	\includegraphics[width=\textwidth]{Our_Work_Zoomed.png}
-	\caption{The overall framework of our work.}
-	\label{fig:our_work}
-\end{figure}
 
-\section{Assumptions \& Justifications}
 
-To construct a rigorous mathematical framework for the \textit{Dancing with the Stars} (DWTS) voting problem, we formulate the following key assumptions based on the statistical characteristics of the data and the inherent logic of the competition. These assumptions serve as the foundation for the subsequent Monte Carlo simulation, parameter inversion, and feature engineering.
+\section{Assumptions and Justifications}
 
 \begin{itemize}
-	\item \textbf{Assumption 1: Google Trends data serves as a valid proxy for Public Attention.}
-    
-	\textit{Justification:} Official fan voting data is unavailable. We employ search volume to gauge the public's active intent to seek contestant information. A significant intrinsic correlation exists between this "public domain popularity" and "private voting behavior." In the external consistency check (Section 5.2.3), the correlation coefficient between the model-estimated votes and search trends exceeds 0.85 in most seasons. This evidence validates the effectiveness of using search trends as a proxy variable.
+	\item \textbf{Assumption 1: Fan Votes are composed of "Base Votes" and "Performance Votes." }
+	
+	\textit{Justification:} Votes come from loyal base fans with stable behavior and floating voters driven by weekly performance. This motivates $V_{ij} = \alpha_i P_i + \beta J_{ij}$ in Section 5.1.1.
 
-	\item \textbf{Assumption 2: Fan Votes are composed of "Base Votes" and "Performance Votes." }
-    
-	\textit{Justification:} Voting motivations stem from two distinct sources. The first source is the contestant's pre-existing "Base Fans." The voting behavior of this group exhibits high stickiness and stability. The second source is "Floating Voters" attracted by the weekly dance performance. Their voting behavior is highly fluid. This assumption constitutes the theoretical basis for the vote estimation model $V_{ij} = \alpha_i P_i + \beta J_{ij}$ in Section 5.1.1.
+	\item \textbf{Assumption 2: Base Popularity is constant throughout the season.}
+	
+	\textit{Justification:} The season is short (10--12 weeks), so core fan loyalty is relatively stable. New support is modeled as performance-related dynamics rather than shifts in base popularity, reducing parameters and enabling efficient Monte Carlo inversion.
 
-	\item \textbf{Assumption 3: Base Popularity is constant throughout the season.}
-    
-	\textit{Justification:} The DWTS season cycle is relatively short (typically 10--12 weeks). The loyalty of the core fan base remains relatively solidified and does not fluctuate significantly in the short term. We attribute the influx of new supporters driven by excellent performance to dynamic "Performance Votes" or cumulative effects rather than changes in the base popularity. This assumption significantly reduces the model parameter space. Consequently, it facilitates large-scale Monte Carlo simulation and parameter inversion.
+	\item \textbf{Assumption 3: The "Floating Vote" pool is fixed and distributed based on Relative Performance.}
+	
+	\textit{Justification:} We fix the floating-vote pool at $M=5000$ for cross-season comparability. Viewers vote based on relative performance, so Section 5.1.3 maps absolute scores to relative weights, reducing judge-scale inconsistencies.
 
-	\item \textbf{Assumption 4: The "Floating Vote" pool is fixed and distributed based on Relative Performance.}
-    
-	\textit{Justification:} We normalize the "floating vote" pool to a fixed total amount ($M=5000$) to ensure cross-season data comparability. Furthermore, audience voting decisions rely more on relative judgments of "who danced better" than on absolute scores. Therefore, we adopt a non-linear mapping in Section 5.1.3. This approach transforms judges' absolute scores into relative ranking weights. It effectively eliminates the influence of inconsistent scoring scales across different judges.
+	\item \textbf{Assumption 4: Standardization eliminates cross-season biases.}
+	
+	\textit{Justification:} Judges differ in scoring strictness across seasons. We standardize via $z=(x-\mu)/\sigma$ to compare relative advantage and enable pooled analysis in Section 7.
 
-	\item \textbf{Assumption 5: Standardization eliminates cross-season biases.}
-    
-	\textit{Justification:} Significant differences exist in the strictness (mean and variance) of judges' scoring across different seasons. We transform all scores into a measure of "relative advantage over the weekly average" via the transformation $z = (x - \mu)/\sigma$. This standardization enables the aggregation of data from over 30 seasons in Section 7. It facilitates unified feature engineering and partner effect evaluation.
-
-	\item \textbf{Assumption 6: Contestant improvement follows a linear trend within a season.}
-    
-	\textit{Justification:} Learning curves possess inherent complexity. However, linear regression sufficiently captures the primary characteristics of contestant ability changes within the limited competition weeks (typically fewer than 12 data points). We explicitly utilize this assumption in Section 7.5. We quantify the "teaching improvement rate" of partners by calculating the slope of the linear trend. This metric effectively distinguishes "high-baseline" partners from "coach-type" partners.
-
-	\item \textbf{Assumption 7: The competition rules are strictly followed.}
-    
-	\textit{Justification:} The logic of parameter inversion in this study relies on treating historical elimination results as the "ground truth" for parameter screening. The parameter space filtered under the constraint of Accuracy $\ge 75\%$ possesses realistic explanatory power only if the rules are strictly enforced. This condition ensures the model accurately reflects the audience's voting logic.
 \end{itemize}
 
 
@@ -238,46 +220,25 @@ To construct a rigorous mathematical framework for the \textit{Dancing with the 
 \section{Data Description and Processing}
 
 \subsection{Data Source and Original Structure}
-The raw dataset comprises historical records from Seasons 1 to 34 of \textit{Dancing with the Stars}. The data is originally stored in a "wide format," where each row corresponds to a specific celebrity contestant. The columns include demographic information (e.g., age, industry) and detailed scores from each judge across weeks 1 through 11 (denoted as \texttt{weekX\_judgeY\_score}). Due to variations in the number of judges (typically 3 or 4) and the progressive elimination of contestants, the raw dataset contains a significant amount of missing values (NaN) and zero entries, indicating non-participation.
+The raw dataset covers Seasons 1--34 of \textit{Dancing with the Stars}. It is stored in a wide format with one row per celebrity and columns for demographics (e.g., age, industry) and weekly judge scores (\texttt{weekX\_judgeY\_score}). Varying judge counts (typically 3--4) and eliminations create many NaN and zero entries that indicate non-participation.
 
 \subsection{Data Cleaning and Feature Engineering}
-To facilitate time-series analysis and survival modeling, we transformed the dataset from a contestant-centric wide format into a contestant-week long format. The specific data processing pipeline is described below:
+To support time-series analysis and survival modeling, we convert the contestant-wide data to a contestant-week long format. The pipeline is summarized below:
 
 \subsubsection{Data Reshaping and Filtering}
-We unpivoted the weekly score columns so that each observation represents a contestant's performance in a specific week. Entries with missing values or zero scores—indicating that the contestant had already been eliminated or did not compete—were removed to ensure data integrity.
+We unpivot weekly score columns so each row represents a contestant-week. Records with missing or zero scores (eliminated or non-competing) are removed to preserve data integrity.
 
-\subsubsection{Metric Calculation}
-To mitigate the inconsistency caused by the varying number of judges across seasons, we engineered several statistical features. Let $S_{i,t,j}$ denote the score given by judge $j$ to contestant $i$ in week $t$, and let $J_t$ be the number of judges in that week.
 
-\begin{itemize}
-	\item \textbf{Total Judge Score ($T_{i,t}$):} The sum of scores received by contestant $i$ in week $t$.
-	\begin{equation}
-		T_{i,t} = \sum_{j=1}^{J_t} S_{i,t,j}
-	\end{equation}
-    
-	\item \textbf{Average Judge Score ($A_{i,t}$):} The arithmetic mean of the judges' scores, providing a scale-invariant measure of performance.
-	\begin{equation}
-		A_{i,t} = \frac{1}{J_t} \sum_{j=1}^{J_t} S_{i,t,j}
-	\end{equation}
-    
-	\item \textbf{Judge Percentage ($P_{i,t}$):} To quantify a contestant's relative competitiveness within the cohort for a given week, we calculated the share of total votes. Let $\mathcal{C}_t$ be the set of all active contestants in week $t$.
-	\begin{equation}
-		P_{i,t} = \frac{T_{i,t}}{\sum_{k \in \mathcal{C}_t} T_{k,t}}
-	\end{equation}
-	This metric ($P_{i,t}$) normalizes the scores, effectively handling variations in both the number of judges and the number of remaining contestants.
-\end{itemize}
 
 \subsubsection{Target Variable Extraction}
 The raw \texttt{results} column contains textual descriptions of the outcome (e.g., "Eliminated Week 3" or "1st Place"). We parsed these strings to extract the \texttt{last\_active\_week} for each celebrity. Furthermore, we generated a binary target variable, \texttt{eliminated\_this\_week}, which takes the value 1 if the current week $t$ corresponds to the contestant's elimination week, and 0 otherwise.
 
 After these preprocessing steps, the final dataset consists of 2,777 contestant-week observations, providing a robust foundation for the subsequent modeling of survival probabilities and score dynamics.
 
-\subsection{Construction of the Stochastic Behavior Model and Vote Estimation Formula}
+\section{Construction of the Stochastic Behavior Model and Vote Estimation Formula}
 
-\subsubsection{Model Formulation}
-To quantify the missing audience votes in the survey data, this study constructs a multi-dimensional stochastic behavior model. The model assumes that audience voting decisions are not random, but are driven by a contestant's background popularity, current performance, and cumulative reputation within the season.
-
-For any season, we decompose the unobserved "audience votes" into the following four core dimensions:
+\subsection{Model Formulation}
+To quantify missing audience votes, we construct a stochastic behavior model in which voting is driven by background popularity, current performance, and cumulative reputation. For each season, we decompose unobserved votes into four core dimensions:
 \begin{itemize}
 	\item \textbf{Initial Popularity Base ($\alpha_i \cdot P_i$):} Represents the baseline "loyal fans" the contestant brings to the competition. Their voting behavior is relatively stable and persists regardless of performance.
 	\item \textbf{Weekly Performance Effect ($\beta \cdot J_{ij}$):} Captures "floating votes" attracted by strong weekly dance performance. The model converts judges' scores into instantaneous voting weights (the conversion method could be further improved), simulating this process.
@@ -314,7 +275,7 @@ To solve the unobserved coefficients $\alpha, \beta, \delta$, we adopt Monte Car
 
 After obtaining a large number of valid solutions, we analyze the distribution and relationships among parameters, and define core performance metrics: Consistency and Certainty.
 
-\subsubsection{Parameter Range Selection}
+\subsection{Parameter Range Selection}
 
 To avoid subjective bias, we adopt a two-stage "wide-then-narrow" range selection strategy.
 
@@ -340,20 +301,13 @@ w_{ij}=\begin{cases}
 \text{Score}_{ij}, & \text{Percentage-based}
 \end{cases}
 \end{equation}
-where $N_j$ is the number of contestants remaining in week $j$. This setting ensures comparability of floating votes across seasons and rules.
-
+where $N_j$ is the number of contestants remaining in week $j$.
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=\textwidth]{calibration_results_S28}
+	\includegraphics[width=0.8\textwidth]{calibration_results_S28}
 	\caption{Example: solution space of $\alpha$ and $\beta$ and estimated fan base for Season 28.}
 	\label{fig:calibration_results_S28}
 \end{figure}
-
-The threshold Accuracy $\ge 75\%$ balances interpretability and robustness:
-
-On one hand, it is clearly above random baseline for typical season lengths, filtering out "accidental hits."
-
-On the other hand, a higher threshold would leave too few valid samples, making parameter distributions unstable. Thus 75\% is a practical compromise, maintaining sample size while ensuring reliable reproduction.
 
 
 \subsection{Consistency Metric: Reproducing Historical Eliminations}
@@ -366,20 +320,20 @@ We define the consistency score $C_{score}$ as the frequency with which the pred
 where $T$ is the number of weeks, and $\mathbb{I}(\cdot)$ is the indicator function.
 
 \subsubsection{Consistency Check with Historical Data}
-Empirically, the model accurately reproduces historical elimination logic in most cases.
+Empirically, the model reproduces most historical eliminations.
 
-With Monte Carlo simulation, we filter parameters with Accuracy $\ge 75\%$. Results show high consistency across seasons, validating the effectiveness of $V_{ij}$ in reproducing the competition rules. The consistency score distributions are shown below:
+Using Monte Carlo simulation, we retain parameters with Accuracy $\ge 75\%$. Results show strong cross-season consistency, validating $V_{ij}$; distributions are shown below:
 
 \begin{figure}[htbp]
 	\centering
-	\begin{subfigure}[t]{0.48\textwidth}
+	\begin{subfigure}[t]{0.38\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{consistency_accuracy_heatmap}
 		\caption{Heatmap of season-week consistency accuracy.}
 		\label{fig:consistency_accuracy_heatmap}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}[t]{0.48\textwidth}
+	\begin{subfigure}[t]{0.38\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{consistency_accuracy_heatmap_binary}
 		\caption{Weeks with Accuracy greater than 75\%.}
@@ -389,42 +343,21 @@ With Monte Carlo simulation, we filter parameters with Accuracy $\ge 75\%$. Resu
 	\label{fig:consistency_accuracy_heatmap_pair}
 \end{figure}
 
-The left plot shows season-week accuracy, with darker color indicating closer match; the right plot marks weeks reaching or exceeding 75\%. Most seasons achieve high consistency across weeks, validating the model's ability to capture voting behavior.
+The left plot shows season-week accuracy (darker = closer match); the right marks weeks with Accuracy $\ge 75\%$. Most seasons show high consistency, supporting the model's capture of voting behavior.
 
 \subsubsection{External Consistency: Cross-Validation with Google Trends}
-To show that the estimated fan votes $\widehat{V}_{ij}$ are not purely mathematical fits, we introduce Google Trends search popularity $G_{ij}$ as an external reference. We define search popularity as "public attention" to validate the reconstructed "private votes."
+To show that $\widehat{V}_{ij}$ is not a purely mathematical fit, we use Google Trends search popularity $G_{ij}$ as an external "public attention" reference for reconstructed "private votes." Using \texttt{pytrends}, we collect contestant trends during competition periods and compute the correlation $r$ between $\widehat{V}_{ij}$ and $G_{ij}$.
 
-Specifically, using the open-source \texttt{pytrends} script, we retrieved Google Trends data for each contestant during competition periods. We then computed the correlation coefficient $r$ between $\widehat{V}_{ij}$ and $G_{ij}$.
+In most regular seasons, $\widehat{V}_{ij}$ and $G_{ij}$ are strongly correlated ($r \ge 0.85$), indicating alignment with real-world attention.
 
-\begin{figure}[htbp]
-	\centering
-	\begin{subfigure}[b]{0.48\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{Google_Trends.jpg}
-		\caption{Illustration of Google Trends data acquisition.}
-		\label{fig:google_trends_logo}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}[b]{0.48\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{daily_smooth_trends_S30.png}
-		\caption{Daily search trends for selected contestants in Season 30.}
-		\label{fig:s30_trends}
-	\end{subfigure}
-	\caption{Google Trends source and Season 30 example.}
-	\label{fig:google_trends_example}
-\end{figure}
-
-In most regular seasons, $\widehat{V}_{ij}$ and $G_{ij}$ show strong positive correlation ($r \ge 0.85$), indicating that the reconstructed votes align with real-world attention.
-
-However, in some special seasons (e.g., S11 and S27), the model and search trends diverge significantly, with correlations $r_{11} = 0.22$ and $r_{27} = 0.319$. This motivates a deeper discussion of logical consistency below.
+In special seasons (e.g., S11 and S27), the model and search trends diverge ($r_{11}=0.22$, $r_{27}=0.319$), motivating a deeper consistency discussion below.
 
 \subsubsection{Deep Consistency Discussion: Special Cases in S11 and S27}
-Despite overall alignment, Season 11 (the Bristol Palin phenomenon) and Season 27 (the Bobby Bones phenomenon) exhibit divergence between estimated votes and search trends.
+Despite overall alignment, Season 11 (the Bristol Palin phenomenon) and Season 27 (the Bobby Bones phenomenon) diverge between estimated votes and search trends.
 
 \begin{itemize}
-	\item \textbf{S11 controversy and attention denoising:} Bristol Palin's search volume was extremely high in the late season (see Figure \ref{fig:S11_divergence}), but the model did not blindly inflate her estimated votes. This indicates the model successfully filtered "non-voting attention" (negative or passive attention) and captured effective votes.
-	\item \textbf{S27 silent fan base identification:} Conversely, Bobby Bones had modest search volume, but very high estimated votes (see Figure \ref{fig:S27_residual}). This suggests the model captured a "silent fan base"—radio audiences who rarely search but are highly active in voting.
+	\item \textbf{S11 controversy and attention denoising:} Bristol Palin's late-season search volume was extremely high (Figure \ref{fig:S11_divergence}), yet the model did not inflate her estimated votes, indicating it filtered non-voting attention and captured effective votes.
+	\item \textbf{S27 silent fan base identification:} Bobby Bones had modest search volume but very high estimated votes (Figure \ref{fig:S27_residual}), suggesting a "silent fan base" of radio audiences who vote actively but rarely search.
 \end{itemize}
 
 \begin{figure}[htbp]
@@ -505,14 +438,14 @@ This process is equivalent to "parallel replay" of historical seasons to compare
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=\textwidth]{Comparison_of_Partiality_Coefficient_(I)_Trends_for_Two_Rules_in_34_seasons.png}
+	\includegraphics[width=0.85\textwidth]{Comparison_of_Partiality_Coefficient_(I)_Trends_for_Two_Rules_in_34_seasons.png}
 	\caption{Partiality coefficient $I$ across seasons.}
 	\label{fig:bias_index_compare}
 \end{figure}
 
-In Figure \ref{fig:bias_index_compare}, the blue line is the rank-based rule (mean 1.103), the orange line is the percentage-based rule (mean 2.281); the dashed line is the $I=1$ balance baseline, and the dotted lines are method means.
+In Figure \ref{fig:bias_index_compare}, the blue line is the rank-based rule (mean 1.103) and the orange line is the percentage-based rule (mean 2.281); the dashed line is the $I=1$ balance baseline, and the dotted lines mark method means.
 
-Across all seasons, the percentage-based rule has higher $I$, indicating a stronger bias toward fan votes, while the rank-based rule is closer to 1 and more balanced. Both rules are highly stable; differences mainly reflect "bias" rather than "randomness."
+Across seasons, the percentage-based rule has higher $I$ (stronger fan bias), while the rank-based rule stays nearer 1 and is more balanced. Both rules are highly stable; differences mainly reflect bias rather than randomness.
 
 \begin{table}[htbp]
 	\centering
@@ -561,7 +494,7 @@ Define controversial samples as
 \end{equation}
 where $Q_{p}(\cdot)$ is the $p$-quantile.
 
-The meanings are summarized below:
+
 \begin{table}[htbp]
 	\centering
 	\caption{Definitions for controversial sample indicators}
@@ -579,29 +512,27 @@ The meanings are summarized below:
 	\end{tabular}
 \end{table}
 
-The given S2, S4, S11, and S27 all satisfy $\mathbb{C}_i=1$; other samples are filtered by the same criteria.
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=0.9\textwidth]{Controversial_Sample_Identification_Scatter_Plot.png}
+	\includegraphics[width=0.7\textwidth]{Controversial_Sample_Identification_Scatter_Plot.png}
 	\caption{Scatter plot for controversial sample identification: conflict weeks $K_i$ vs. cumulative structural conflicts $\sum_j \mathbb{S}_{ij}$.}
 	\label{fig:controversial_sample_scatter}
 \end{figure}
 
-To verify cross-season consistency, we display $\Delta R_{ij}$ distributions (boxplots/heatmaps).
 
 \begin{figure}[htbp]
 	\centering
-	\begin{subfigure}[t]{0.48\textwidth}
+	\begin{subfigure}[t]{0.40\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{Heatmap_Tail_Outliers.png}
+			\includegraphics[width=\textwidth]{Heatmap_Tail_Outliers.png}
 		\caption{Heatmap of $\Delta R$ outliers for controversial contestants.}
 		\label{fig:delta_r_heatmap}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}[t]{0.48\textwidth}
+	\begin{subfigure}[t]{0.40\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{Rank_Diff_Distribution.png}
+			\includegraphics[width=\textwidth]{Rank_Diff_Distribution.png}
 		\caption{Distribution of rank differences $\Delta R$ across seasons.}
 		\label{fig:delta_r_distribution}
 	\end{subfigure}
@@ -609,13 +540,9 @@ To verify cross-season consistency, we display $\Delta R_{ij}$ distributions (bo
 	\label{fig:delta_r_analysis}
 \end{figure}
 
-Notably, these samples align closely with controversial contestants mentioned in media sources (e.g., "Top 30 Scandals" videos), validating our selection method.
-
-After identifying samples, we replay both rules in the next section to compare eliminations and final ranks, and then test whether the Judge Save mechanism reduces controversial outcomes.
-
 \subsubsection{Rule Sensitivity Replay Results (Rank-based vs Percentage-based)}
 
-For each controversial sample's season, we perform "rule replay": under the same judge scores and estimated fan votes, we compute weekly combined ranks by rank-based and percentage-based rules, and record final ranks and elimination week changes.
+For each controversial sample's season, we perform rule replay: under the same judge scores and estimated fan votes, we compute weekly combined ranks by rank-based and percentage-based rules, and record final rank and elimination week changes.
 
 We define:
 \begin{itemize}
@@ -624,39 +551,41 @@ We define:
 	\item \textbf{Controversial sample retention rate}: proportion of controversial samples reaching semifinal/final.
 \end{itemize}
 
+
+
+Aggregated replay results show that the average partiality coefficient $I$ under the percentage-based rule is 4.234, significantly higher than 1.874 for the rank-based rule. 
+
+This reveals a fundamental difference: the percentage rule over-rewards fan votes, diluting judges' corrective power. 
+
 The following table summarizes $\Delta P$ and $\Delta W$ for each sample.
 
 \begin{table}[htbp]
   \centering
   \caption{Changes in final rank and survival weeks for controversial samples under two rules.}
-	\begin{tabular}{cclcc}
+	\begin{tabular}{cclcc@{\hspace{1em}}cclcc}
 \toprule
-	\multicolumn{1}{l}{Season} & \multicolumn{1}{l}{Week} & Sample & \multicolumn{1}{l}{ΔP} & \multicolumn{1}{l}{ΔW} \\
+	\multicolumn{1}{l}{Season} & \multicolumn{1}{l}{Week} & Sample & \multicolumn{1}{l}{$\Delta P$} & \multicolumn{1}{l}{$\Delta W$} &
+	\multicolumn{1}{l}{Season} & \multicolumn{1}{l}{Week} & Sample & \multicolumn{1}{l}{$\Delta P$} & \multicolumn{1}{l}{$\Delta W$} \\
 \midrule
-	2     & 5     & Jerry Rice & -1    & -1 \\
-	4     & 6     & Billy Ray & -2    & -3 \\
-	11    & 2     & Bristol Palin & -2    & -1 \\
-	27    & 3     & Bobby Bones & -1    & -2 \\
+	2     & 5     & Jerry Rice & -1    & -1 &
 	30    & 1     & Iman Shumpert & 3     & 1 \\
+	4     & 6     & Billy Ray & -2    & -3 &
 	30    & 3     & Cody Rigsby & 3     & 3 \\
+	11    & 2     & Bristol Palin & -2    & -1 &
 	15    & 1     & Bristol Palin & 2     & 3 \\
+	27    & 3     & Bobby Bones & -1    & -2 &
 	32    & 2     & Mauricio Umansky & 2     & 1 \\
-	34    & 1     & Andy Richter & 2     & 2 \\
 \bottomrule
 	\end{tabular}
   \label{tab:rule_sensitivity_summary}
 \end{table}
 
-Aggregated replay results show that the average partiality coefficient $I$ under the percentage-based rule is 4.234, significantly higher than 1.874 for the rank-based rule. This reveals a fundamental difference: the percentage rule over-rewards fan votes, diluting judges' corrective power. This explains why controversial samples survive 2--3 more weeks under the percentage rule.
-
-These results provide a baseline for evaluating the Judge Save mechanism.
-
 \subsubsection{Judge Save Mechanism Simulation and Impact}
-To test the "Bottom-2 Judge Save" mechanism, we modify the replay process: determine Bottom-2 by combined rank, then save the contestant with higher judge scores and eliminate the lower one. This acts as a professional safety valve under extreme fan vote bias.
+To test the "Bottom-2 Judge Save" mechanism, we modify the replay process: identify the Bottom-2 by combined rank, save the higher judge score, and eliminate the lower. This acts as a professional safety valve under extreme fan bias.
 
-Results show that introducing Judge Save significantly reduces "abnormal survival" of controversial samples: fewer reach late rounds, average survival weeks decrease; meanwhile, contestants with high judge scores but low fan votes are more likely to be retained.
+Results show Judge Save reduces abnormal survival of controversial samples: fewer reach late rounds, average survival weeks fall; meanwhile, high-judge/low-fan contestants are more likely to be retained.
 
-Mechanistically, Judge Save re-splits the one-dimensional combined result. Because the percentage rule has a strong "long-tail effect" (extremely high fan votes can offset very low judge scores), the Bottom-2 duel adds a high-pass filter at the end of the rule, enforcing a professional floor and preventing low-score contestants from advancing solely on popularity.
+Mechanistically, Judge Save re-splits the one-dimensional combined result. Because the percentage rule has a strong long-tail effect (extremely high fan votes can offset very low judge scores), the Bottom-2 duel adds a high-pass filter, enforcing a professional floor and preventing low-score contestants from advancing solely on popularity.
 
 \begin{figure}[htbp]
 	\centering
@@ -683,7 +612,7 @@ To further illustrate the mechanism, we create a hypothetical celebrity in Seaso
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=\textwidth]{Sress_Test.png}
+	\includegraphics[width=0.7\textwidth]{Sress_Test.png}
 	\caption{Stress Test: Survival Trajectories of a "High-Popularity, Low-Skill" Virtual Contestant under Different Rules (Season 11)}
 	\label{fig:stress_test}
 \end{figure}
@@ -697,17 +626,9 @@ See below.
 
 \section{Decoding Success: What Makes a Winning Couple?}
 
-\subsection{Research Objectives and Problem Definition}
-
-This section focuses on "what factors determine how far contestants go."
-
-We separate judge scores and fan votes, evaluate partner teaching ability and contestant characteristics (industry, region, age), and test whether the two channels are consistent.
-
 \subsection{Data Processing and Standardization}
 
-We use the estimated fan votes $\widehat{V}_{ij}$ and judge scores $JudgeScore_{ij}$ from Question 1. To ensure comparability across seasons and weeks, both scores are standardized using Z-scores at the season-week level. When the weekly standard deviation is 0, we set the Z-score to 0 to avoid division by zero.
-
-Here, $x$ is the original score (judge or fan), and $\mu$ and $\sigma$ are the mean and standard deviation for that season-week across contestants.
+We use the estimated fan votes $\widehat{V}_{ij}$ and judge scores $JudgeScore_{ij}$ from Question 1, standardized into z-scores at the season-week level to ensure comparability.
 
 \subsection{Feature Engineering}
 
@@ -716,14 +637,8 @@ We build a multi-dimensional feature set covering contestant attributes, regiona
 \subsubsection{Contestant Attribute Features}
 
 \begin{itemize}
-	\item \textbf{Age:} Keep continuous variable \texttt{celebrity\_age\_during\_season} to capture non-linear effects on performance and audience preference.
-    
-	\item \textbf{Occupation category:} The raw data includes 30+ occupations (Singer, Actor, Athlete, etc.), with some very small categories (e.g., Politician). To reduce sparsity, we use a \textbf{Top-K retention strategy}:
-	\begin{itemize}
-		\item Keep the top 10 occupations by sample size
-		\item Merge others into \texttt{Other}
-		\item Create \texttt{Industry\_Group} (11 categories)
-	\end{itemize}
+	\item Continuous variables like \texttt{celebrity\_age\_during\_season} were retained.
+	\item Categorical variables, such as the 30+ occupation types, were consolidated by retaining the top 10 categories by sample size and grouping the remainder into \texttt{Other} to reduce sparsity.
 \end{itemize}
 
 \subsubsection{Regional Background Features}
@@ -770,14 +685,7 @@ We one-hot encode \texttt{Industry\_Group} and \texttt{Region\_Detailed}, combin
 To avoid scale differences across seasons/weeks, we use Z-scored judge and fan results. For categorical variables (occupation and region), we filter small sample categories.
 
 \subsubsection{Occupation Effects}
-Occupations may affect professional performance and audience preference. We compute category-level means:
-\[
-\bar{z}^{(J)}_{k} = \frac{1}{n_k}\sum_{i\in k} z^{(J)}_i,\qquad
-\bar{z}^{(F)}_{k} = \frac{1}{n_k}\sum_{i\in k} z^{(F)}_i,
-\]
-where $k$ is occupation category and $n_k$ its sample size. Small categories are merged or removed for stability.
-
-Overall results show that "professional performance" and "fan popularity" do not fully align: stage-related occupations score higher with judges, while others score higher with fans. Figures \ref{fig:industry_judge_impact}--\ref{fig:industry_scatter} visualize this.
+Occupation analysis reveals a divergence in how judges and fans evaluate contestants. Stage-performance occupations (e.g., singers, dancers) consistently received higher judge scores, whereas entertainers like comedians and reality TV stars garnered significantly stronger fan support relative to their technical scores.
 
 \begin{figure}[htbp]
 	\centering
@@ -808,11 +716,7 @@ Overall results show that "professional performance" and "fan popularity" do not
 Two typical examples: comedians perform well in fan votes but relatively weaker in judge scores, reflecting entertainment strength but technical limits; musicians show higher professional scores but lower fan support. This suggests occupation affects audience expectations and skill profiles.
 
 \subsubsection{Regional Background Effects}
-Regional factors may influence results via (1) training resources and (2) regional identity in voting. We use the two-level region system and compare distributions after filtering small samples.
-
-For judge scores, regional differences are moderate, mainly in spread and outliers; for fan votes, long-tail patterns appear, indicating regional mobilization. We visualize with violin plots (see Figures \ref{fig:region_judge_violin}--\ref{fig:region_fan_violin}).
-
-Top-10 regions for judge scores and fan votes are shown in Table \ref{tab:region_top10}. The lists overlap only partially (e.g., USA-Georgia, USA-Nevada, USA-Hawaii, France), indicating structural divergence between professional and fan channels rather than simple consistency.
+Regional background exhibited a stronger influence on fan votes than on judge scores (Table \ref{tab:region_top10}). We observed a ``regional mobilization effect'' in fan voting, where contestants from smaller or tightly-knit states (e.g., Alaska, Delaware) achieved disproportionately high average vote counts, suggesting concentrated local support. The top-10 lists overlap only partially (e.g., USA-Georgia, USA-Nevada, USA-Hawaii, France), indicating structural divergence between professional and fan channels rather than simple consistency.
 
 \begin{table}[htbp]
 	\centering
@@ -836,45 +740,40 @@ Top-10 regions for judge scores and fan votes are shown in Table \ref{tab:region
 	\end{tabular}
 \end{table}
 
-Treating U.S. contestants as a single group hides large internal differences. Fine-grained analysis shows a strong "regional mobilization effect" in fan votes—smaller or tightly knit states (e.g., Alaska, Delaware) often yield very high mean votes, possibly due to concentrated support. By contrast, contestants from large states like California or New York do not appear in the top 10 for fan votes and show no strong "home advantage."
+Treating U.S. contestants as a single group hides large internal differences. By contrast, contestants from large states like California or New York do not appear in the top 10 for fan votes and show no strong "home advantage."
 
 Violin plots further show that judge scores are more concentrated with small high-score tails, while fan votes have stronger high-end tails. This supports the mechanism that regional identity affects fan voting more, while professional performance depends on training resources and experience.
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=0.95\textwidth]{region_judges_score_violin}
+	\includegraphics[width=0.8\textwidth]{region_judges_score_violin}
 	\caption{Distribution of judge scores by region (violin plot).}
 	\label{fig:region_judge_violin}
 \end{figure}
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=0.95\textwidth]{region_fan_votes_violin}
+	\includegraphics[width=0.8\textwidth]{region_fan_votes_violin}
 	\caption{Distribution of fan votes by region (violin plot).}
 	\label{fig:region_fan_violin}
 \end{figure}
 
 \subsubsection{Age Effects}
-
-Age may have a non-linear impact: younger contestants have physical advantages but may elicit less empathy; older contestants may have technical disadvantages but stronger narratives. We use KDE and Lowess trend estimation.
+The relationship between age and scores was weakly negative and non-linear. Judge scores showed a slightly stronger correlation with age ($r=-0.302$) than fan votes ($r=-0.172$), indicating that technical assessment is more sensitive to this factor. This relationship is likely confounded by occupation, as different professions have distinct age distributions.
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=0.95\textwidth]{age_kde_lowess}
+	\includegraphics[width=0.8\textwidth]{age_kde_lowess}
 	\caption{Age vs judge scores/fan votes: KDE + Lowess trends.}
 	\label{fig:age_kde_lowess}
 \end{figure}
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=0.9\textwidth]{age_industry_interaction_v2}
+	\includegraphics[width=0.7\textwidth]{age_industry_interaction_v2}
 	\caption{Age distributions across occupations (boxplots).}
 	\label{fig:age_industry_box}
 \end{figure}
-
-Results show a slight inverted-U pattern between age and judge scores, with stronger correlation for judge scores ($r=-0.302$) than for fan votes ($r=-0.172$). This suggests judge scores are more sensitive to age, while fan votes depend less on age and more on other factors.
-
-However, correlation is not causation: age may influence scores indirectly through occupation, exposure, and existing fan base. Different occupations have systematic age differences (Figure \ref{fig:age_industry_box}), creating confounding pathways.
 
 For example, athletes are generally younger, while entrepreneurs and comedians are older. Yet athletes do not necessarily receive higher fan votes, indicating fans consider more than dance skill. This aligns with the occupation analysis: fan votes reflect multi-dimensional appeal rather than technical performance alone.
 
@@ -940,51 +839,28 @@ In the judge channel, base performance and improvement rate show positive correl
 
 \subsection{Multifactor Attribution: Random Forest Model}
 
-\subsubsection{Why a Multivariate Model? (Limits of Univariate Analysis)}
-Let each observation be a season-week-contestant tuple $t=(s,w,i)$. We define:
-\begin{equation}
-\mathcal{D}=\{(\mathbf{x}_t,\ y^{(J)}_t,\ y^{(F)}_t)\}_{t=1}^{N},
-\end{equation}
-where $y^{(J)}_t$ is judge-channel relative performance and $y^{(F)}_t$ is fan-channel relative votes, and $\mathbf{x}_t$ is the feature vector (age, occupation, region).
-
-Univariate analysis examines $\mathbb{E}[y\mid x_k]$, but correlated features (e.g., occupation with age, region with industry) cause confounding. Thus we fit multivariate models:
+To address confounding factors in univariate analysis, we employed a Dual-Channel Random Forest that models judge and fan outcomes under a unified feature mapping. Let each observation be a season-week-contestant tuple $t=(s,w,i)$ with feature vector $\mathbf{x}_t$ (age, occupation, region) and targets $y^{(J)}_t$ and $y^{(F)}_t$. We estimate
 \begin{equation}
 \mathbb{E}\big[y^{(\cdot)}\mid \mathbf{x}\big]\approx f^{(\cdot)}(\mathbf{x}),\qquad (\cdot)\in\{J,F\},
 \end{equation}
-and compare the sensitivities of both channels under the same feature mapping.
+and compare the two channels under identical inputs.
 
-\subsubsection{Q3 Code Logic and Model Construction}
-\textbf{(1) Target standardization.} Q3 code converts raw $(Score^{(J)}_t,\ Vote_t)$ into season-level Z-scores:
+\subsubsection{Q3 Model Construction}
+We standardize judge scores and fan votes within each season to remove scale differences and interpret outcomes as relative advantage:
 \begin{equation}
 y^{(J)}_t = \frac{Score^{(J)}_t-\mu^{(J)}_{s}}{\sigma^{(J)}_{s}},\qquad
 y^{(F)}_t = \frac{Vote_t-\mu^{(F)}_{s}}{\sigma^{(F)}_{s}},
 \end{equation}
-where $\mu^{(\cdot)}_{s}$ and $\sigma^{(\cdot)}_{s}$ are season means and stds (degenerate handling if $\sigma=0$). This removes scale differences and interprets $y$ as relative advantage.
-
-\textbf{(2) Categorical reduction and encoding.} Let occupation be $g_i\in\mathcal{G}$, keep top-$K$ occupations $\mathcal{G}_K$, and define:
-\begin{equation}
-g_i' = \begin{cases}
-g_i, & g_i\in\mathcal{G}_K,\\
-\texttt{Other}, & \text{otherwise}.
-\end{cases}
-\end{equation}
-Apply similar grouping to region variables, then one-hot encode $g_i'$ and region.
-
-\textbf{(3) Feature vector.} For each sample $t=(s,w,i)$ with age $a_i$:
-\begin{equation}
-\mathbf{x}_t = \big[\ s,\ w,\ a_i,\ \mathrm{OneHot}(g_i'),\ \mathrm{OneHot}(r_i')\ \big]^\top\in\mathbb{R}^{d}.
-\end{equation}
-
-\textbf{(4) Dual-channel random forest regression.} Fit:
+with degenerate handling when $\sigma=0$. Categorical variables are consolidated to reduce sparsity (e.g., top-$K$ occupations with an \texttt{Other} group), then encoded alongside season, week, and age to form $\mathbf{x}_t$. Using the same feature mapping for both channels, we fit separate random forest regressors:
 \begin{equation}
 \hat f^{(J)} = \arg\min_{f\in\mathcal{F}_{RF}}\ \frac{1}{N}\sum_{t=1}^{N}\big(y^{(J)}_t-f(\mathbf{x}_t)\big)^2,\qquad
-\hat f^{(F)} = \arg\min_{f\in\mathcal{F}_{RF}}\ \frac{1}{N}\sum_{t=1}^{N}\big(y^{(F)}_t-f(\mathbf{x}_t)\big)^2.
+\hat f^{(F)} = \arg\min_{f\in\mathcal{F}_{RF}}\ \frac{1}{N}\sum_{t=1}^{N}\big(y^{(F)}_t-f(\mathbf{x}_t)\big)^2,
 \end{equation}
-Random forest predictor:
+with the ensemble predictor
 \begin{equation}
 \hat f(\mathbf{x})=\frac{1}{B}\sum_{b=1}^{B} T_b(\mathbf{x}),
 \end{equation}
-where $T_b$ is the $b$-th tree and $B$ is the number of trees (set to $B=100$).
+where $T_b$ is the $b$-th tree and $B=100$.
 
 \subsubsection{Feature Importance Ranking: Judges are More "Ability-Oriented," Fans More "Structure-Oriented"}
 Q3 outputs feature importance based on mean decrease in impurity (MDI). For feature $k$:
@@ -1016,43 +892,38 @@ We further test whether finer regional granularity changes conclusions. If certa
 
 \noindent\textbf{Section Summary:} Using a unified feature mapping $\mathbf{x}$, we fit $\hat f^{(J)}$ and $\hat f^{(F)}$ and compare MDI importances to contrast the drivers of judge vs fan channels, moving from univariate plots to multivariate structural interpretation.
 
-\subsection{Summary}
-This section builds a multi-factor model using estimated fan votes and judge scores, and evaluates partner effects and contestant features. Results show that the judge channel is more "ability-oriented," with strong partner base and teaching effects; the fan channel is more "structure-oriented," driven by exposure and mobilization.
-
-Contestant features (age, occupation, region) matter but differ in direction: age is more sensitive in judge scores; occupation and region are more important on the fan side, reflecting popularity structure and regional mobilization. Overall, mechanisms differ across channels, explaining "high-score low-popularity" or "low-score high-vote" outcomes.
-
 \section{Recommendations to the Committee}
 See "Recommendations to the Committee (Appendix)."
 
 \section{Strengths and Weaknesses}
 \subsection{Strengths}
 \begin{itemize}
-	\item \textbf{Innovative method (Monte Carlo + parameter inversion + Google Trends):} We estimate fan votes with Monte Carlo simulation and parameter inversion, and cross-validate with Google Trends. This ensures internal consistency and external alignment, and denoises non-voting attention. \textit{This improves internal validity, external alignment, and de-noises non-voting attention.}
-	\item \textbf{Multi-dimensional features and dual-channel random forest:} We build a multi-dimensional feature system (contestant attributes, partner ability, region) and use dual-channel random forests, separating judge "ability-driven" signals from fan "structure-driven" effects. \textit{Dual-channel RF separates judge skill signals from fan structure effects.}
-	\item \textbf{30+30 dual-track linear scoring system (DTLSS):} While staying audience-friendly, it sets a professional floor. The rule is simple and interpretable, addressing controversies and improving live explainability. \textit{Simple, interpretable scoring balances audience appeal and professional fairness.}
-	\item \textbf{Controversial sample screening and rule replay:} Includes Judge Save mechanism experiments, quantifying bias and stability with strong conclusions. \textit{Rule replay quantifies bias and stability, supporting robust conclusions.}
+	\item \textbf{Innovative method (Monte Carlo + parameter inversion + Google Trends):} We estimate fan votes via Monte Carlo inversion and validate with Google Trends, improving internal consistency, external alignment, and denoising. \textit{Improves internal validity and external alignment.}
+	\item \textbf{Multi-dimensional features and dual-channel random forest:} A multi-feature system with dual-channel RF separates judge skill signals from fan structure effects. \textit{Separates judge skill signals from fan structure effects.}
+	\item \textbf{30+30 dual-track linear scoring system (DTLSS):} A simple, interpretable rule that preserves audience appeal while enforcing a professional floor. \textit{Balances audience appeal and professional fairness.}
+	\item \textbf{Controversial sample screening and rule replay:} Judge Save experiments quantify bias and stability with clear conclusions. \textit{Quantifies bias and stability to support conclusions.}
 \end{itemize}
 \subsection{Weaknesses}
 \begin{itemize}
-	\item \textbf{Static fan-base assumption:} We assume a constant base fan size, ignoring time-varying shocks during the season. \textit{Static fan-base assumption may miss time-varying shocks.}
-	\item \textbf{Parameter range depends on pilot runs:} "Wide-then-narrow" reduces subjectivity but still depends on small pilot runs, introducing chance effects. \textit{Narrowing ranges based on small pilots can introduce chance effects.}
-	\item \textbf{Feature dimensions can be expanded:} The model does not yet include social media sentiment or dance-style fit variables, which could improve explanatory power and performance. \textit{Add sentiment/engagement and style-fit variables to improve modeling.}
+	\item \textbf{Static fan-base assumption:} We hold base fans constant, omitting time-varying shocks. \textit{May miss time-varying shocks.}
+	\item \textbf{Parameter range depends on pilot runs:} "Wide-then-narrow" still relies on small pilots, introducing chance effects. \textit{Pilot-based ranges may introduce chance effects.}
+	\item \textbf{Feature dimensions can be expanded:} No social sentiment or style-fit variables yet, limiting explanatory power. \textit{Add sentiment/engagement and style-fit variables.}
 \end{itemize}
 
 \section{Conclusion}
 
-This paper studies the structural tension in DWTS scoring: how to balance professional judges' evaluations and audience popularity. Under the constraint of missing direct vote data, we analyze rule behavior and bias from a mechanism perspective and propose improvements for fairness, interpretability, and engagement. The core finding is that controversy stems from amplification effects in the rules, which should be corrected at the rule level.
+This paper examines the DWTS scoring tension between judges and fans. With no direct vote data, we analyze rule behavior and bias and propose improvements for fairness, interpretability, and engagement. The core finding is that controversies arise from rule amplification and should be corrected at the rule level.
 
-Three main conclusions follow: (1) judge scores and fan votes reflect different values, and fan influence needs rational constraints to prevent dilution of technical evaluation; (2) both percentage and rank rules have endogenous bias and amplify extreme outcomes when popularity and skill diverge; (3) introducing limited judge intervention at key points or capping fan influence can improve fairness and stability without reducing participation.
+Three conclusions follow: (1) judge and fan scores reflect different values, so fan influence should be constrained to avoid diluting technical evaluation; (2) both percentage and rank rules have endogenous bias and amplify extremes when popularity and skill diverge; (3) limited judge intervention or fan caps can improve fairness and stability without reducing participation.
 \vspace{0.3em}
 \noindent Overall conclusions:
 \begin{itemize}[leftmargin=*]
-	\item Judge scores and fan votes reflect different values; the key is to constrain fan influence to avoid diluting technical evaluation.
+	\item Judge and fan scores reflect different values; constrain fan influence to avoid diluting technical evaluation.
 	\item Both percentage and rank rules have endogenous bias; when popularity and skill diverge, extreme results are amplified.
-	\item Limited judge intervention at key points or fan-score caps can improve fairness and stability without reducing participation.
+	\item Limited judge intervention or fan-score caps can improve fairness and stability without reducing participation.
 \end{itemize}
 
-Therefore, we propose a "dual-track linear scoring system" (30+30) that symmetrically integrates professional and popular channels, reduces implicit amplification, and improves interpretability. This approach can be applied to other competitions combining expert evaluation and public voting. Future work can enrich participation and data sources while maintaining the core structure to achieve fairness, entertainment, and engagement.
+Therefore, we propose a "dual-track linear scoring system" (30+30) that symmetrically integrates professional and popular channels, reduces implicit amplification, and improves interpretability. This approach applies to other expert-plus-public competitions; future work can expand participation and data while preserving the core structure for fairness, entertainment, and engagement.
 
 \clearpage
 \clearpage
