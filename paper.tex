@@ -134,13 +134,39 @@ By addressing these tasks, our study aims to provide quantitative insights and d
 \end{figure}
 
 \section{Assumptions \& Justifications}
-问题假设。
-大致想到了这些部分：
+
+To construct a rigorous mathematical framework for the \textit{Dancing with the Stars} (DWTS) voting problem, we formulate the following key assumptions based on the statistical characteristics of the data and the inherent logic of the competition. These assumptions serve as the foundation for the subsequent Monte Carlo simulation, parameter inversion, and feature engineering.
+
 \begin{itemize}
-    \item 节目组必然严格遵守规则
-    \item 假设在整个赛季中，一个选手的基础粉丝量（Base Fans）是不变的
-    \item Google Trends 的搜索热度，大致上可以作为衡量现实世界中公众关注度的有效“代理变量”
+    \item \textbf{Assumption 1: Google Trends data serves as a valid proxy for Public Attention.}
+    
+    \textit{Justification:} Official fan voting data is unavailable. We employ search volume to gauge the public's active intent to seek contestant information. A significant intrinsic correlation exists between this ``public domain popularity'' and ``private voting behavior.'' In the external consistency check (Section 5.2.3), the correlation coefficient between the model-estimated votes and search trends exceeds 0.85 in most seasons. This evidence validates the effectiveness of using search trends as a proxy variable.
+
+    \item \textbf{Assumption 2: Fan Votes are composed of ``Base Votes'' and ``Performance Votes.'' }
+    
+    \textit{Justification:} Voting motivations stem from two distinct sources. The first source is the contestant's pre-existing ``Base Fans.'' The voting behavior of this group exhibits high stickiness and stability. The second source is ``Floating Voters'' attracted by the weekly dance performance. Their voting behavior is highly fluid. This assumption constitutes the theoretical basis for the vote estimation model $V_{ij} = \alpha_i P_i + \beta J_{ij}$ in Section 5.1.1.
+
+    \item \textbf{Assumption 3: Base Popularity is constant throughout the season.}
+    
+    \textit{Justification:} The DWTS season cycle is relatively short (typically 10--12 weeks). The loyalty of the core fan base remains relatively solidified and does not fluctuate significantly in the short term. We attribute the influx of new supporters driven by excellent performance to dynamic ``Performance Votes'' or cumulative effects rather than changes in the base popularity. This assumption significantly reduces the model parameter space. Consequently, it facilitates large-scale Monte Carlo simulation and parameter inversion.
+
+    \item \textbf{Assumption 4: The ``Floating Vote'' pool is fixed and distributed based on Relative Performance.}
+    
+    \textit{Justification:} We normalize the ``floating vote'' pool to a fixed total amount ($M=5000$) to ensure cross-season data comparability. Furthermore, audience voting decisions rely more on relative judgments of ``who danced better'' than on absolute scores. Therefore, we adopt a non-linear mapping in Section 5.1.3. This approach transforms judges' absolute scores into relative ranking weights. It effectively eliminates the influence of inconsistent scoring scales across different judges.
+
+    \item \textbf{Assumption 5: Standardization eliminates cross-season biases.}
+    
+    \textit{Justification:} Significant differences exist in the strictness (mean and variance) of judges' scoring across different seasons. We transform all scores into a measure of ``relative advantage over the weekly average'' via the transformation $z = (x - \mu)/\sigma$. This standardization enables the aggregation of data from over 30 seasons in Section 7. It facilitates unified feature engineering and partner effect evaluation.
+
+    \item \textbf{Assumption 6: Contestant improvement follows a linear trend within a season.}
+    
+    \textit{Justification:} Learning curves possess inherent complexity. However, linear regression sufficiently captures the primary characteristics of contestant ability changes within the limited competition weeks (typically fewer than 12 data points). We explicitly utilize this assumption in Section 7.5. We quantify the ``teaching improvement rate'' of partners by calculating the slope of the linear trend. This metric effectively distinguishes ``high-baseline'' partners from ``coach-type'' partners.
+
+    \item \textbf{Assumption 7: The competition rules are strictly followed.}
+    
+    \textit{Justification:} The logic of parameter inversion in this study relies on treating historical elimination results as the ``ground truth'' for parameter screening. The parameter space filtered under the constraint of Accuracy $\ge 75\%$ possesses realistic explanatory power only if the rules are strictly enforced. This condition ensures the model accurately reflects the audience's voting logic.
 \end{itemize}
+
 
 \section{Notations}
 \begin{center}
@@ -148,12 +174,27 @@ By addressing these tasks, our study aims to provide quantitative insights and d
         \toprule
         \textbf{Symbol} & \textbf{Description} & \textbf{Unit} \\
         \midrule
-        $D$ & Wear depth & mm \\
+        $i$ & Contestant index & -- \\
+        $j$ & Week index & -- \\
+        $s$ & Season index & -- \\
+        $V_{ij}$ & Estimated fan votes of contestant $i$ in week $j$ & votes \\
+        $P_i$ & Base popularity index (e.g., Google Trends normalized) & index \\
+        $J_{ij}$ & Judges’ score for contestant $i$ in week $j$ & points \\
+        $C_{ij}$ & Cumulative performance index up to week $j$ & points \\
+        $\alpha_i$ & Base-fan conversion coefficient for contestant $i$ & votes/index \\
+        $\beta$ & Performance vote conversion coefficient & votes/point \\
+        $M$ & Size of the floating vote pool & votes \\
+        $z_{ij}$ & Standardized score: $z=(x-\mu)/\sigma$ & z-score \\
+        $Score_{Judge}$ & Judge score component (0--30) & points \\
+        $Score_{Fan}$ & Fan score component (0--30) & points \\
+        $TotalScore$ & Overall competition score ($Score_{Judge}+Score_{Fan}$) & points \\
+        $\mu_s,\sigma_s$ & Season-$s$ mean and std of judges’ scores & points \\
+        $r_{GT}$ & Correlation between $V$ and Google Trends & -- \\
         \bottomrule
     \end{tabular}
 \end{center}
 
-用AI快速完成
+
 
 
 \section{Data Description and Processing}
@@ -1073,7 +1114,18 @@ g_i, & g_i\in\mathcal{G}_K,\\
 
 \section{Strengths and Weaknesses}
 \subsection{Strengths}
+\begin{itemize}
+    \item \textbf{创新方法（Monte Carlo + 参数反演 + Google Trends）}：采用蒙特卡洛模拟与参数反演估算粉丝票，并结合 Google Trends 进行交叉验证，兼顾内部逻辑自洽与外部现实契合；同时通过对“非投票性关注”进行识别与过滤，降低噪声干扰。\textit{This improves internal validity, external alignment, and de-noises non-voting attention.}
+    \item \textbf{多维特征与双通道随机森林}：构建“选手属性 + 舞伴能力 + 地域背景”等多维特征体系，采用双通道随机森林模型，清晰区分评委端的“能力导向”与粉丝端的“结构导向”，揭示两类评分机制的差异来源。\textit{Dual-channel RF separates judge skill signals from fan structure effects.}
+    \item \textbf{30+30 双轨线性积分制（DTLSS）}：在保持观众友好性的同时，设定专业底线的数学防御，规则简单、可操作性强，能直接回应赛事争议并提升直播可解释性与互动性。\textit{Simple, interpretable scoring balances audience appeal and professional fairness.}
+    \item \textbf{争议样本筛选与规则回放模拟}：包含评委拯救机制（Judge Save）的对比试验，量化比较不同规则的偏袒性与稳定性，结论扎实可靠。\textit{Rule replay quantifies bias and stability, supporting robust conclusions.}
+\end{itemize}
 \subsection{Weaknesses}
+\begin{itemize}
+    \item \textbf{粉丝基数静态假设}：假设选手“基础粉丝量全程不变”，未充分考虑赛季中的突发舆情与话题事件对粉丝基数的动态影响，可能与真实场景存在偏差。\textit{Static fan-base assumption may miss time-varying shocks.}
+    \item \textbf{参数区间依赖试运行}：参数范围采用“先宽后窄”的收敛策略虽能降低主观偏差，但收缩区间仍依赖小规模试运行结果，存在一定统计偶然性。\textit{Narrowing ranges based on small pilots can introduce chance effects.}
+    \item \textbf{特征维度有待扩展}：模型暂未纳入社交媒体互动质量（如评论情感倾向）、舞种类型适配度等变量，未来可进一步丰富特征以提升解释力与预测性能。\textit{Add sentiment/engagement and style-fit variables to improve modeling.}
+\end{itemize}
 
 \section{Conclusion}
 

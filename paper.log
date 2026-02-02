@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.9.2)  2 FEB 2026 23:22
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.9.2)  2 FEB 2026 23:59
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -611,18 +611,19 @@ File: Our_Work_Zoomed.png Graphic file (type bmp)
 [2]
 
 [3]
+
+[4]
+
+[5]
 File: calibration_results_S28.png Graphic file (type bmp)
 <calibration_results_S28.png>
 
 
-[4]
+[6]
 File: consistency_accuracy_heatmap.png Graphic file (type bmp)
 <consistency_accuracy_heatmap.png>
 File: consistency_accuracy_heatmap_binary.png Graphic file (type bmp)
 <consistency_accuracy_heatmap_binary.png>
-
-
-[5]
 
 Package fontspec Info: 
 (fontspec)             Could not resolve font "SimSun/BI" (it probably doesn't
@@ -655,53 +656,54 @@ File: daily_smooth_trends_S30.png Graphic file (type bmp)
 <daily_smooth_trends_S30.png>
 
 
-[6]
+[7]
 File: S11_r.png Graphic file (type bmp)
 <S11_r.png>
 File: S_27_r.png Graphic file (type bmp)
 <S_27_r.png>
 
 
-[7]
+[8]
+
+[9]
 File: Comparison_of_Partiality_Coefficient_(I)_Trends_for_Two_Rules_in_34_seasons.png Graphic file (type bmp)
 <Comparison_of_Partiality_Coefficient_(I)_Trends_for_Two_Rules_in_34_seasons.png>
 
 
-[8]
-
-[9]
+[10]
 File: Controversial_Sample_Identification_Scatter_Plot.png Graphic file (type bmp)
 <Controversial_Sample_Identification_Scatter_Plot.png>
+
+
+[11]
 File: Heatmap_Tail_Outliers.png Graphic file (type bmp)
 <Heatmap_Tail_Outliers.png>
 File: Rank_Diff_Distribution.png Graphic file (type bmp)
 <Rank_Diff_Distribution.png>
 
 
-[10]
-
-[11]
+[12]
 File: B_B_S27_Survival_Comparison.png Graphic file (type bmp)
 <B_B_S27_Survival_Comparison.png>
 File: waffles.png Graphic file (type bmp)
 <waffles.png>
 
 
-[12]
+[13]
 File: Sress_Test.png Graphic file (type bmp)
 <Sress_Test.png>
 
 
-[13]
-
 [14]
-Overfull \hbox (6.55756pt too wide) in paragraph at lines 703--704
+
+[15]
+Overfull \hbox (6.55756pt too wide) in paragraph at lines 744--745
 \TU/SimSun(0)/m/n/12 生 成 舞 伴 特 征 \TU/lmtt/m/n/12 avg_judge_improvement\TU/TimesNewRoman(0)/m/n/12 , \TU/lmtt/m/n/12 avg_fan_improvement\TU/TimesNewRoman(0)/m/n/12 , \TU/lmtt/m/n/12 avg_judge_performance\TU/TimesNewRoman(0)/m/n/12 ,
  []
 
 
 
-[15]
+[16]
 File: industry_judge_impact.png Graphic file (type bmp)
 <industry_judge_impact.png>
 File: industry_fan_impact.png Graphic file (type bmp)
@@ -710,33 +712,33 @@ File: industry_scatter_optimized_with_arrow.png Graphic file (type bmp)
 <industry_scatter_optimized_with_arrow.png>
 
 
-[16]
-
 [17]
+
+[18]
 File: region_judges_score_violin.png Graphic file (type bmp)
 <region_judges_score_violin.png>
 File: region_fan_votes_violin.png Graphic file (type bmp)
 <region_fan_votes_violin.png>
 
 
-[18]
+[19]
 File: age_kde_lowess.png Graphic file (type bmp)
 <age_kde_lowess.png>
 File: age_industry_interaction_v2.png Graphic file (type bmp)
 <age_industry_interaction_v2.png>
 
 
-[19]
-
 [20]
+
+[21]
 File: partner_teaching_effect_judge.png Graphic file (type bmp)
 <partner_teaching_effect_judge.png>
 File: partner_growth_effect_fan.png Graphic file (type bmp)
 <partner_growth_effect_fan.png>
 
 
-[21]
-Overfull \hbox (10.34735pt too wide) in paragraph at lines 907--916
+[22]
+Overfull \hbox (10.34735pt too wide) in paragraph at lines 948--957
  [][] 
  []
 
@@ -744,19 +746,17 @@ File: partner_improvement_ranking.png Graphic file (type bmp)
 <partner_improvement_ranking.png>
 
 
-[22]
-
 [23]
+
+[24]
 File: feature_importance_zscore.png Graphic file (type bmp)
 <feature_importance_zscore.png>
 
 
-[24]
+[25]
 File: feature_importance_detailed.png Graphic file (type bmp)
 <feature_importance_detailed.png>
 
-
-[25]
 
 [26]
 
@@ -764,25 +764,29 @@ File: feature_importance_detailed.png Graphic file (type bmp)
 
 [28]
 
-[29
+[29]
+
+[30]
+
+[31
 
 ]
-Overfull \hbox (1.17168pt too wide) in paragraph at lines 1109--1110
+Overfull \hbox (1.17168pt too wide) in paragraph at lines 1161--1162
 \TU/TimesNewRoman(0)/m/n/12 ment. In each season, celebrities from diverse professional backgrounds are paired
  []
 
 
-Overfull \hbox (154.39478pt too wide) in paragraph at lines 1133--1133
+Overfull \hbox (154.39478pt too wide) in paragraph at lines 1185--1185
  []    \TU/lmtt/m/n/10.95 raise ValueError("All files failed to read or no valid data exists, merging is not possible!")[] 
  []
 
 
-Overfull \hbox (56.66605pt too wide) in paragraph at lines 1133--1133
+Overfull \hbox (56.66605pt too wide) in paragraph at lines 1185--1185
  []\TU/lmtt/m/n/10.95 # Merge all DataFrames, ignore original indices, and reset a new continuous index[] 
  []
 
 
-Overfull \hbox (114.15353pt too wide) in paragraph at lines 1133--1133
+Overfull \hbox (114.15353pt too wide) in paragraph at lines 1185--1185
  []\TU/lmtt/m/n/10.95 # Sort by original Chinese columns: Season → Week → Contestant Name for subsequent analysis[] 
  []
 
@@ -791,22 +795,22 @@ Overfull \hbox (114.15353pt too wide) in paragraph at lines 1133--1133
 [1
 
 ]
-Overfull \hbox (68.16354pt too wide) in paragraph at lines 1133--1133
+Overfull \hbox (68.16354pt too wide) in paragraph at lines 1185--1185
  []\TU/lmtt/m/n/10.95 merged_df = merged_df.sort_values(by=["Season", "Week", "Name"], ignore_index=True)[] 
  []
 
 
-Overfull \hbox (217.63101pt too wide) in paragraph at lines 1133--1133
+Overfull \hbox (217.63101pt too wide) in paragraph at lines 1185--1185
  []\TU/lmtt/m/n/10.95 # (Optional) Remove duplicate rows (if duplicate data exists for the same Season-Week-Contestant combination)[] 
  []
 
 
-Overfull \hbox (85.40977pt too wide) in paragraph at lines 1133--1133
+Overfull \hbox (85.40977pt too wide) in paragraph at lines 1185--1185
  []\TU/lmtt/m/n/10.95 merged_df = merged_df.drop_duplicates(subset=["Season", "Week", "Name"], keep="first")[] 
  []
 
 
-Overfull \hbox (119.90227pt too wide) in paragraph at lines 1133--1133
+Overfull \hbox (119.90227pt too wide) in paragraph at lines 1185--1185
  []\TU/lmtt/m/n/10.95 print(f"\n Merging completed! The full-season data has been saved to: {Config.OUTPUT_FILE}")[] 
  []
 
@@ -821,12 +825,12 @@ L3 programming layer <2022/08/05>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 11260 strings out of 473832
- 290191 string characters out of 5733159
- 686561 words of memory out of 5000000
- 34154 multiletter control sequences out of 15000+600000
+ 11269 strings out of 473832
+ 290754 string characters out of 5733159
+ 690563 words of memory out of 5000000
+ 34163 multiletter control sequences out of 15000+600000
  565948 words of font info for 107 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  79i,15n,93p,780b,1237s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on paper.pdf (34 pages).
+Output written on paper.pdf (36 pages).
