@@ -3,7 +3,7 @@
 \geometry{left=1in,right=0.75in,top=1in,bottom=1in,headheight=14.49998pt}
 
 \newcommand{\Problem}{C}
-\newcommand{\Team}{Team\_Number}
+\newcommand{\Team}{2627882}
 \newcommand{\Title}{Balancing Judges and Fans: Reconstructing Votes and Evaluating DWTS Scoring Rules}
 
 \usepackage{fontspec}
@@ -25,10 +25,8 @@
 \usepackage{enumitem}
 \usepackage{lastpage}
 \usepackage{listings}
-\usepackage{url}
 
-% Enable hyperlinks and URL handling (load near the end of preamble)
-\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+% (Hyperlinks disabled per requirements; remove hyperref/url to avoid clickable links)
 
 % Search images under ./images by default
 \graphicspath{{images/}}
@@ -74,6 +72,7 @@
 
 \pagestyle{fancy}
 \fancyhf{} 
+\lhead{Team Number \Team}
 \rhead{Page \thepage\ of \pageref{LastRegularPage}} 
 \renewcommand{\headrulewidth}{0.4pt}
 
@@ -99,7 +98,9 @@
     \textbf{\large Summary}
 \end{center}
 
+\begin{sloppypar}
 Enter your summary here, outlining the background, methods, models, and main conclusions.
+\end{sloppypar}
 
 \vspace{1em}
 
@@ -224,17 +225,42 @@ To construct a rigorous mathematical framework for the \textit{Dancing with the 
 
 \section{Data Description and Processing}
 
+\subsection{Data Source and Original Structure}
+The raw dataset comprises historical records from Seasons 1 to 34 of \textit{Dancing with the Stars}. The data is originally stored in a ``wide format,'' where each row corresponds to a specific celebrity contestant. The columns include demographic information (e.g., age, industry) and detailed scores from each judge across weeks 1 through 11 (denoted as \texttt{weekX\_judgeY\_score}). Due to variations in the number of judges (typically 3 or 4) and the progressive elimination of contestants, the raw dataset contains a significant amount of missing values (NaN) and zero entries, indicating non-participation.
 
-阐释数据的处理部分，包括数据的获取、清洗、预处理等。
-评委打分直接给，简单说预处理即可。
+\subsection{Data Cleaning and Feature Engineering}
+To facilitate time-series analysis and survival modeling, we transformed the dataset from a contestant-centric wide format into a contestant-week long format. The specific data processing pipeline is described below:
 
-其他数据：
+\subsubsection{Data Reshaping and Filtering}
+We unpivoted the weekly score columns so that each observation represents a contestant's performance in a specific week. Entries with missing values or zero scores—indicating that the contestant had already been eliminated or did not compete—were removed to ensure data integrity.
+
+\subsubsection{Metric Calculation}
+To mitigate the inconsistency caused by the varying number of judges across seasons, we engineered several statistical features. Let $S_{i,t,j}$ denote the score given by judge $j$ to contestant $i$ in week $t$, and let $J_t$ be the number of judges in that week.
+
 \begin{itemize}
-    \item Google Trends 数据（这里可以夸大工作量，虽然只找了三年的，但是用脚本获取了20年的也可以，注意不是爬虫，Google Trends禁止爬虫）
-    \item 选手社交媒体数据（2021年）
+    \item \textbf{Total Judge Score ($T_{i,t}$):} The sum of scores received by contestant $i$ in week $t$.
+    \begin{equation}
+        T_{i,t} = \sum_{j=1}^{J_t} S_{i,t,j}
+    \end{equation}
+    
+    \item \textbf{Average Judge Score ($A_{i,t}$):} The arithmetic mean of the judges' scores, providing a scale-invariant measure of performance.
+    \begin{equation}
+        A_{i,t} = \frac{1}{J_t} \sum_{j=1}^{J_t} S_{i,t,j}
+    \end{equation}
+    
+    \item \textbf{Judge Percentage ($P_{i,t}$):} To quantify a contestant's relative competitiveness within the cohort for a given week, we calculated the share of total votes. Let $\mathcal{C}_t$ be the set of all active contestants in week $t$.
+    \begin{equation}
+        P_{i,t} = \frac{T_{i,t}}{\sum_{k \in \mathcal{C}_t} T_{k,t}}
+    \end{equation}
+    This metric ($P_{i,t}$) normalizes the scores, effectively handling variations in both the number of judges and the number of remaining contestants.
 \end{itemize}
 
-\section{蒙特卡洛模拟与参数反演：观众投票行为建模}
+\subsubsection{Target Variable Extraction}
+The raw \texttt{results} column contains textual descriptions of the outcome (e.g., ``Eliminated Week 3'' or ``1st Place''). We parsed these strings to extract the \texttt{last\_active\_week} for each celebrity. Furthermore, we generated a binary target variable, \texttt{eliminated\_this\_week}, which takes the value 1 if the current week $t$ corresponds to the contestant's elimination week, and 0 otherwise.
+
+After these preprocessing steps, the final dataset consists of 2,777 contestant-week observations, providing a robust foundation for the subsequent modeling of survival probabilities and score dynamics.
+
+
 
 
 \subsection{随机行为模型的构建与投票估算公式}
@@ -1055,67 +1081,9 @@ g_i, & g_i\in\mathcal{G}_K,\\
 
 
 \section{给组委会的建议：}
+详见“给组委会的建议（附）”。
 
-基于本研究对 DWTS 历史计分规则（排名法与百分比法）的量化评估，我们发现复杂的权重计算往往是导致观众困惑与结果争议的根源。为了在提升节目娱乐性的同时捍卫舞蹈竞技的专业底线，我们建议组委会采用一种全新的\textbf{“双轨线性积分系统”（Dual-Track Linear Scoring System, DTLSS）}。
 
-该机制的设计哲学在于\textbf{“解耦与制衡”}：将专业评分与大众投票解耦为两条平行的评价赛道，并通过线性映射实现两者权重的精确制衡。
-
-\subsection{新积分方式：“30+30”计分模式}
-
-我们建议摒弃当前的“票数百分比”或的“综合排名”计算，转而采用我们提出的积分叠加制。该模型设定两条赛道拥有完全一致的权重上限（30分）：
-
-\begin{itemize}
-    \item \textbf{评委赛道 (Judges' Track)}：维持现状。三位评委给出的分数直接累加，满分 30 分。这代表了选手的\textbf{技术硬上限}。
-    \item \textbf{粉丝赛道 (Fans' Track)}：将粉丝投票的排名直接按序转化为分数，满分同为 30 分。这代表了选手的\textbf{人气硬上限}。
-\end{itemize}
-
-\subsubsection*{计算逻辑与规则}
-粉丝赛道的得分 $S_{Fan}$ 仅取决于选手在当周观众投票中的相对排名 $Rank_{Fan}$。其计算公式如下：
-
-\begin{equation}
-    S_{Fan} = S_{max} - \delta \times (Rank_{Fan} - 1)
-\end{equation}
-
-其中，$S_{max} = 30$ 为粉丝赛道满分，$\delta = 2$ 为排名步长。即：观众投票第 1 名直接获得 30 分，第 2 名获得 28 分，以此类推。
-
-最终裁定分数为两者之和，总分最低者淘汰：
-\begin{equation}
-    TotalScore = Score_{Judge} + Score_{Fan}
-\end{equation}
-
-\subsection{优势一：极致的观众友好度 (Audience Accessibility)}
-
-与以往观众无法直观判断“几百万票能抵消多少评委分”的黑箱状态不同，DTLSS 机制具有极强的\textbf{可解释性 (Interpretability)} 和电视表现力：
-
-\begin{itemize}
-    \item \textbf{直观的激励机制}：规则转化为简单的线性奖励——“在观众投票中每提升一名，总分增加 2 分”。这种清晰的反馈回路比复杂的百分比算法更能有效调动观众的投票热情。
-    \item \textbf{悬念可视化的直播体验}：在直播环节，屏幕可分屏显示确定的“评委分（基数）”与动态滚动的“粉丝分（变数）”。观众可以清晰地感知竞争态势：“选手 A 目前评委分落后 2 分，只需在粉丝排名中超过选手 B，即可实现反超。”这种直观的加法运算将极大地增强节目的紧张感与互动性。
-\end{itemize}
-
-\subsection{优势二：强制性的结构平衡 (Structural Balance)}
-
-我们在 Section 6.4 的分析中指出，Season 27 的争议源于粉丝票数在百分比法下的无限膨胀效应。新机制通过\textbf{“量纲统一”}彻底解决了这一隐患，构建了数学层面的防守机制。
-
-\subsubsection*{1. 流量封顶机制 (Influence Capping)}
-无论某位明星的粉丝基数有多庞大（即使出现如 Bobby Bones 式的离群点），他在粉丝赛道的收益上限被严格锁定为 30 分。这从根本上限制了超额选票的边际效用，防止人气因素过度稀释专业评分的权重。
-
-\subsubsection*{2. 专业底线的数学防御}
-我们可以通过以下情景回测来验证该机制的鲁棒性：
-
-\begin{itemize}
-    \item \textbf{情景假设}：选手 X 舞技极差（评委分 15 分），但人气极高（粉丝分满分 30 分），其总分为 $15+30=45$ 分。
-    \item \textbf{对比选手}：选手 Y 表现优异（评委分 27 分），但人气中等（粉丝排名第 3，获 26 分），其总分为 $27+26=53$ 分。
-    \item \textbf{结果判定}：$53 > 45$，选手 Y 胜出。
-\end{itemize}
-
-上述推演证明，即使在人气完全碾压的情况下，过低的技术分依然会导致淘汰。DTLSS 机制在数学原理上杜绝了“严重偏科”选手夺冠的可能性，确保了比赛结果的公正性。
-
-\subsection{总结}
-
-“双轨线性积分系统”并非削弱粉丝的参与感，而是将抽象的支持转化为看得见、算得清的\textbf{“积分奖励”}。它用最简单的加法逻辑，在复杂的社会选择问题中实现了专业评判与大众喜爱的完美制衡。我们建议组委会在 Season 35 优先试行此方案，作为解决长期以来“评分争议”的破局之策。
-\section{Results and Discussion}
-
-\section{Sensitivity Analysis}
 
 \section{Strengths and Weaknesses}
 \subsection{Strengths}
@@ -1185,23 +1153,86 @@ L. S. Shapley \& M. Shubik.
 
 \bibitem{McDougall} 
 ``Voting Matters.'' 
-McDougall Trust, \url{https://www.mcdougall.org.uk/}.
+McDougall Trust, \texttt{https://www.mcdougall.org.uk/}.
 
 \bibitem{VotingTheory} 
 ``Probabilistic voting model.'' 
-In \textit{Voting Theory}, \url{https://en.wikipedia.org/wiki/Probabilistic_voting}.
+In \textit{Voting Theory}, \texttt{https://en.wikipedia.org/wiki/Probabilistic_voting}.
 
 \bibitem{GoogleTrends} 
 ``Google Trends.'' 
-Google LLC, \url{https://trends.google.com/}.
+Google LLC, \texttt{https://trends.google.com/}.
 
 \bibitem{pytrends} 
 General Mills. 
 ``pytrends: Unofficial API for Google Trends.'' 
-GitHub repository, \url{https://github.com/GeneralMills/pytrends}.
+GitHub repository, \texttt{https://github.com/GeneralMills/pytrends}.
 
 \end{thebibliography}
 \label{LastRegularPage} 
+
+\clearpage
+\pagenumbering{gobble}
+
+\section*{给组委会的建议（附）}
+
+基于本研究对 DWTS 历史计分规则（排名法与百分比法）的量化评估，我们发现复杂的权重计算往往是导致观众困惑与结果争议的根源。为了在提升节目娱乐性的同时捍卫舞蹈竞技的专业底线，我们建议组委会采用一种全新的\textbf{“双轨线性积分系统”（Dual-Track Linear Scoring System, DTLSS）}。
+
+该机制的设计哲学在于\textbf{“解耦与制衡”}：将专业评分与大众投票解耦为两条平行的评价赛道，并通过线性映射实现两者权重的精确制衡。
+
+\subsection*{新积分方式：“30+30”计分模式}
+
+我们建议摒弃当前的“票数百分比”或的“综合排名”计算，转而采用我们提出的积分叠加制。该模型设定两条赛道拥有完全一致的权重上限（30分）：
+
+\begin{itemize}
+    \item \textbf{评委赛道 (Judges' Track)}：维持现状。三位评委给出的分数直接累加，满分 30 分。这代表了选手的\textbf{技术硬上限}。
+    \item \textbf{粉丝赛道 (Fans' Track)}：将粉丝投票的排名直接按序转化为分数，满分同为 30 分。这代表了选手的\textbf{人气硬上限}。
+\end{itemize}
+
+\subsubsection*{计算逻辑与规则}
+粉丝赛道的得分 $S_{Fan}$ 仅取决于选手在当周观众投票中的相对排名 $Rank_{Fan}$。其计算公式如下：
+
+\begin{equation}
+    S_{Fan} = S_{max} - \delta \times (Rank_{Fan} - 1)
+\end{equation}
+
+其中，$S_{max} = 30$ 为粉丝赛道满分，$\delta = 2$ 为排名步长。即：观众投票第 1 名直接获得 30 分，第 2 名获得 28 分，以此类推。
+
+最终裁定分数为两者之和，总分最低者淘汰：
+\begin{equation}
+    TotalScore = Score_{Judge} + Score_{Fan}
+\end{equation}
+
+\subsection*{优势一：极致的观众友好度 (Audience Accessibility)}
+
+与以往观众无法直观判断“几百万票能抵消多少评委分”的黑箱状态不同，DTLSS 机制具有极强的\textbf{可解释性 (Interpretability)} 和电视表现力：
+
+\begin{itemize}
+    \item \textbf{直观的激励机制}：规则转化为简单的线性奖励——“在观众投票中每提升一名，总分增加 2 分”。这种清晰的反馈回路比复杂的百分比算法更能有效调动观众的投票热情。
+    \item \textbf{悬念可视化的直播体验}：在直播环节，屏幕可分屏显示确定的“评委分（基数）”与动态滚动的“粉丝分（变数）”。观众可以清晰地感知竞争态势：“选手 A 目前评委分落后 2 分，只需在粉丝排名中超过选手 B，即可实现反超。”这种直观的加法运算将极大地增强节目的紧张感与互动性。
+\end{itemize}
+
+\subsection*{优势二：强制性的结构平衡 (Structural Balance)}
+
+我们在 Section 6.4 的分析中指出，Season 27 的争议源于粉丝票数在百分比法下的无限膨胀效应。新机制通过\textbf{“量纲统一”}彻底解决了这一隐患，构建了数学层面的防守机制。
+
+\subsubsection*{1. 流量封顶机制 (Influence Capping)}
+无论某位明星的粉丝基数有多庞大（即使出现如 Bobby Bones 式的离群点），他在粉丝赛道的收益上限被严格锁定为 30 分。这从根本上限制了超额选票的边际效用，防止人气因素过度稀释专业评分的权重。
+
+\subsubsection*{2. 专业底线的数学防御}
+我们可以通过以下情景回测来验证该机制的鲁棒性：
+
+\begin{itemize}
+    \item \textbf{情景假设}：选手 X 舞技极差（评委分 15 分），但人气极高（粉丝分满分 30 分），其总分为 $15+30=45$ 分。
+    \item \textbf{对比选手}：选手 Y 表现优异（评委分 27 分），但人气中等（粉丝排名第 3，获 26 分），其总分为 $27+26=53$ 分。
+    \item \textbf{结果判定}：$53 > 45$，选手 Y 胜出。
+\end{itemize}
+
+上述推演证明，即使在人气完全碾压的情况下，过低的技术分依然会导致淘汰。DTLSS 机制在数学原理上杜绝了“严重偏科”选手夺冠的可能性，确保了比赛结果的公正性。
+
+\subsection*{总结}
+
+“双轨线性积分系统”并非削弱粉丝的参与感，而是将抽象的支持转化为看得见、算得清的\textbf{“积分奖励”}。它用最简单的加法逻辑，在复杂的社会选择问题中实现了专业评判与大众喜爱的完美制衡。我们建议组委会在 Season 35 优先试行此方案，作为解决长期以来“评分争议”的破局之策。
 
 \clearpage
 

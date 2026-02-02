@@ -1,60 +1,58 @@
-\contentsline {section}{\numberline {1}Introduction}{1}{section.1}%
-\contentsline {subsection}{\numberline {1.1}Problem Background}{1}{subsection.1.1}%
-\contentsline {subsection}{\numberline {1.2}Restatement of the Problem}{1}{subsection.1.2}%
-\contentsline {subsection}{\numberline {1.3}Our Work}{2}{subsection.1.3}%
-\contentsline {section}{\numberline {2}Assumptions \& Justifications}{3}{section.2}%
-\contentsline {section}{\numberline {3}Notations}{4}{section.3}%
-\contentsline {section}{\numberline {4}Data Description and Processing}{4}{section.4}%
-\contentsline {section}{\numberline {5}蒙特卡洛模拟与参数反演：观众投票行为建模}{5}{section.5}%
-\contentsline {subsection}{\numberline {5.1}随机行为模型的构建与投票估算公式}{5}{subsection.5.1}%
-\contentsline {subsubsection}{\numberline {5.1.1}公式的建立}{5}{subsubsection.5.1.1}%
-\contentsline {subsubsection}{\numberline {5.1.2}参数范围的选择}{5}{subsubsection.5.1.2}%
-\contentsline {subsubsection}{\numberline {5.1.3}改进的权重转换方法：从绝对分到相对秩}{6}{subsubsection.5.1.3}%
-\contentsline {subsection}{\numberline {5.2}Consistency 一致性度量：历史淘汰结果的再现能力分析}{7}{subsection.5.2}%
-\contentsline {subsubsection}{\numberline {5.2.1}一致性得分的定义}{7}{subsubsection.5.2.1}%
-\contentsline {subsubsection}{\numberline {5.2.2}模拟结果与历史数据的一致性检验}{7}{subsubsection.5.2.2}%
-\contentsline {subsubsection}{\numberline {5.2.3}外部一致性：Google Trends 数据的交叉校验}{7}{subsubsection.5.2.3}%
-\contentsline {subsubsection}{\numberline {5.2.4}逻辑一致性的深度讨论：针对 S11 与 S27 的特例分析}{8}{subsubsection.5.2.4}%
-\contentsline {subsubsection}{\numberline {5.2.5}总结}{9}{subsubsection.5.2.5}%
-\contentsline {subsection}{\numberline {5.3}Certainty 确定性度量：粉丝投票估值的稳定性分析}{9}{subsection.5.3}%
-\contentsline {section}{\numberline {6}偏好权衡与抗波动性：DWTS 计分规则演变及其对粉丝/评委影响力评估的研究}{9}{section.6}%
-\contentsline {subsection}{\numberline {6.1}研究目标与问题定义}{9}{subsection.6.1}%
-\contentsline {subsection}{\numberline {6.2}指标构建}{10}{subsection.6.2}%
-\contentsline {subsection}{\numberline {6.3}跨赛季对比：两种规则的整体差异与偏袒性}{10}{subsection.6.3}%
-\contentsline {subsection}{\numberline {6.4}争议选手的规则敏感性与评委拯救机制评估}{11}{subsection.6.4}%
-\contentsline {subsubsection}{\numberline {6.4.1}争议样本与判定标准}{11}{subsubsection.6.4.1}%
-\contentsline {subsubsection}{\numberline {6.4.2}规则敏感性回放结果（排名法 vs 百分比法）}{13}{subsubsection.6.4.2}%
-\contentsline {subsubsection}{\numberline {6.4.3}评委拯救机制模拟与影响}{13}{subsubsection.6.4.3}%
-\contentsline {subsubsection}{\numberline {6.4.4}极端假设验证：赛季模拟小结（以S11为例）}{14}{subsubsection.6.4.4}%
-\contentsline {subsubsection}{\numberline {6.4.5}对未来规则的启示}{15}{subsubsection.6.4.5}%
-\contentsline {section}{\numberline {7}Decoding Success: What Makes a Winning Couple?}{15}{section.7}%
-\contentsline {subsection}{\numberline {7.1}研究目标与问题定义}{15}{subsection.7.1}%
-\contentsline {subsection}{\numberline {7.2}数据处理与标准化}{15}{subsection.7.2}%
-\contentsline {subsection}{\numberline {7.3}特征工程}{15}{subsection.7.3}%
-\contentsline {subsubsection}{\numberline {7.3.1}选手属性特征}{15}{subsubsection.7.3.1}%
-\contentsline {subsubsection}{\numberline {7.3.2}地域背景特征}{16}{subsubsection.7.3.2}%
-\contentsline {subsubsection}{\numberline {7.3.3}舞伴能力特征}{16}{subsubsection.7.3.3}%
-\contentsline {subsubsection}{\numberline {7.3.4}分类变量编码与最终特征矩阵}{17}{subsubsection.7.3.4}%
-\contentsline {subsection}{\numberline {7.4}选手属性的影响分析}{17}{subsection.7.4}%
-\contentsline {subsubsection}{\numberline {7.4.1}职业类别的影响}{17}{subsubsection.7.4.1}%
-\contentsline {subsubsection}{\numberline {7.4.2}地域背景的影响}{18}{subsubsection.7.4.2}%
-\contentsline {subsubsection}{\numberline {7.4.3}年龄效应的影响}{20}{subsubsection.7.4.3}%
-\contentsline {subsection}{\numberline {7.5}舞伴效应的深度建模}{21}{subsection.7.5}%
-\contentsline {subsubsection}{\numberline {7.5.1}标准化与成长斜率的定义}{22}{subsubsection.7.5.1}%
-\contentsline {subsubsection}{\numberline {7.5.2}二维散点：基础水平 vs. 成长速度}{22}{subsubsection.7.5.2}%
-\contentsline {subsection}{\numberline {7.6}多因素综合归因：随机森林模型}{23}{subsection.7.6}%
-\contentsline {subsubsection}{\numberline {7.6.1}为什么需要多元模型（单因素分析的局限）}{23}{subsubsection.7.6.1}%
-\contentsline {subsubsection}{\numberline {7.6.2}Q3 代码逻辑与模型构建}{23}{subsubsection.7.6.2}%
-\contentsline {subsubsection}{\numberline {7.6.3}特征重要性排序：评委端更“能力导向”，粉丝端更“结构导向”}{24}{subsubsection.7.6.3}%
-\contentsline {subsection}{\numberline {7.7}总结}{25}{subsection.7.7}%
-\contentsline {section}{\numberline {8}给组委会的建议：}{25}{section.8}%
-\contentsline {subsection}{\numberline {8.1}新积分方式：“30+30”计分模式}{26}{subsection.8.1}%
-\contentsline {subsection}{\numberline {8.2}优势一：极致的观众友好度 (Audience Accessibility)}{26}{subsection.8.2}%
-\contentsline {subsection}{\numberline {8.3}优势二：强制性的结构平衡 (Structural Balance)}{26}{subsection.8.3}%
-\contentsline {subsection}{\numberline {8.4}总结}{27}{subsection.8.4}%
-\contentsline {section}{\numberline {9}Results and Discussion}{27}{section.9}%
-\contentsline {section}{\numberline {10}Sensitivity Analysis}{27}{section.10}%
-\contentsline {section}{\numberline {11}Strengths and Weaknesses}{27}{section.11}%
-\contentsline {subsection}{\numberline {11.1}Strengths}{27}{subsection.11.1}%
-\contentsline {subsection}{\numberline {11.2}Weaknesses}{28}{subsection.11.2}%
-\contentsline {section}{\numberline {12}Conclusion}{28}{section.12}%
+\contentsline {section}{\numberline {1}Introduction}{1}{}%
+\contentsline {subsection}{\numberline {1.1}Problem Background}{1}{}%
+\contentsline {subsection}{\numberline {1.2}Restatement of the Problem}{1}{}%
+\contentsline {subsection}{\numberline {1.3}Our Work}{2}{}%
+\contentsline {section}{\numberline {2}Assumptions \& Justifications}{3}{}%
+\contentsline {section}{\numberline {3}Notations}{4}{}%
+\contentsline {section}{\numberline {4}Data Description and Processing}{4}{}%
+\contentsline {subsection}{\numberline {4.1}Data Source and Original Structure}{4}{}%
+\contentsline {subsection}{\numberline {4.2}Data Cleaning and Feature Engineering}{5}{}%
+\contentsline {subsubsection}{\numberline {4.2.1}Data Reshaping and Filtering}{5}{}%
+\contentsline {subsubsection}{\numberline {4.2.2}Metric Calculation}{5}{}%
+\contentsline {subsubsection}{\numberline {4.2.3}Target Variable Extraction}{6}{}%
+\contentsline {subsection}{\numberline {4.3}随机行为模型的构建与投票估算公式}{6}{}%
+\contentsline {subsubsection}{\numberline {4.3.1}公式的建立}{6}{}%
+\contentsline {subsubsection}{\numberline {4.3.2}参数范围的选择}{7}{}%
+\contentsline {subsubsection}{\numberline {4.3.3}改进的权重转换方法：从绝对分到相对秩}{7}{}%
+\contentsline {subsection}{\numberline {4.4}Consistency 一致性度量：历史淘汰结果的再现能力分析}{8}{}%
+\contentsline {subsubsection}{\numberline {4.4.1}一致性得分的定义}{8}{}%
+\contentsline {subsubsection}{\numberline {4.4.2}模拟结果与历史数据的一致性检验}{8}{}%
+\contentsline {subsubsection}{\numberline {4.4.3}外部一致性：Google Trends 数据的交叉校验}{8}{}%
+\contentsline {subsubsection}{\numberline {4.4.4}逻辑一致性的深度讨论：针对 S11 与 S27 的特例分析}{9}{}%
+\contentsline {subsubsection}{\numberline {4.4.5}总结}{10}{}%
+\contentsline {subsection}{\numberline {4.5}Certainty 确定性度量：粉丝投票估值的稳定性分析}{10}{}%
+\contentsline {section}{\numberline {5}偏好权衡与抗波动性：DWTS 计分规则演变及其对粉丝/评委影响力评估的研究}{11}{}%
+\contentsline {subsection}{\numberline {5.1}研究目标与问题定义}{11}{}%
+\contentsline {subsection}{\numberline {5.2}指标构建}{11}{}%
+\contentsline {subsection}{\numberline {5.3}跨赛季对比：两种规则的整体差异与偏袒性}{12}{}%
+\contentsline {subsection}{\numberline {5.4}争议选手的规则敏感性与评委拯救机制评估}{12}{}%
+\contentsline {subsubsection}{\numberline {5.4.1}争议样本与判定标准}{12}{}%
+\contentsline {subsubsection}{\numberline {5.4.2}规则敏感性回放结果（排名法 vs 百分比法）}{14}{}%
+\contentsline {subsubsection}{\numberline {5.4.3}评委拯救机制模拟与影响}{15}{}%
+\contentsline {subsubsection}{\numberline {5.4.4}极端假设验证：赛季模拟小结（以S11为例）}{16}{}%
+\contentsline {subsubsection}{\numberline {5.4.5}对未来规则的启示}{16}{}%
+\contentsline {section}{\numberline {6}Decoding Success: What Makes a Winning Couple?}{16}{}%
+\contentsline {subsection}{\numberline {6.1}研究目标与问题定义}{16}{}%
+\contentsline {subsection}{\numberline {6.2}数据处理与标准化}{17}{}%
+\contentsline {subsection}{\numberline {6.3}特征工程}{17}{}%
+\contentsline {subsubsection}{\numberline {6.3.1}选手属性特征}{17}{}%
+\contentsline {subsubsection}{\numberline {6.3.2}地域背景特征}{17}{}%
+\contentsline {subsubsection}{\numberline {6.3.3}舞伴能力特征}{18}{}%
+\contentsline {subsubsection}{\numberline {6.3.4}分类变量编码与最终特征矩阵}{18}{}%
+\contentsline {subsection}{\numberline {6.4}选手属性的影响分析}{18}{}%
+\contentsline {subsubsection}{\numberline {6.4.1}职业类别的影响}{19}{}%
+\contentsline {subsubsection}{\numberline {6.4.2}地域背景的影响}{20}{}%
+\contentsline {subsubsection}{\numberline {6.4.3}年龄效应的影响}{22}{}%
+\contentsline {subsection}{\numberline {6.5}舞伴效应的深度建模}{23}{}%
+\contentsline {subsubsection}{\numberline {6.5.1}标准化与成长斜率的定义}{24}{}%
+\contentsline {subsubsection}{\numberline {6.5.2}二维散点：基础水平 vs. 成长速度}{24}{}%
+\contentsline {subsection}{\numberline {6.6}多因素综合归因：随机森林模型}{25}{}%
+\contentsline {subsubsection}{\numberline {6.6.1}为什么需要多元模型（单因素分析的局限）}{25}{}%
+\contentsline {subsubsection}{\numberline {6.6.2}Q3 代码逻辑与模型构建}{25}{}%
+\contentsline {subsubsection}{\numberline {6.6.3}特征重要性排序：评委端更“能力导向”，粉丝端更“结构导向”}{26}{}%
+\contentsline {subsection}{\numberline {6.7}总结}{27}{}%
+\contentsline {section}{\numberline {7}给组委会的建议：}{27}{}%
+\contentsline {section}{\numberline {8}Strengths and Weaknesses}{28}{}%
+\contentsline {subsection}{\numberline {8.1}Strengths}{28}{}%
+\contentsline {subsection}{\numberline {8.2}Weaknesses}{28}{}%
+\contentsline {section}{\numberline {9}Conclusion}{28}{}%
