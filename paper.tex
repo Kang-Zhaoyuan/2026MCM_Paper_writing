@@ -4,7 +4,7 @@
 
 \newcommand{\Problem}{C}
 \newcommand{\Team}{2627882}
-\newcommand{\Title}{Balancing Judges and Fans: Reconstructing Votes and Evaluating DWTS Scoring Rules}
+\newcommand{\Title}{Dancing with Data: A Quantitative Framework for Vote Inference and Scoring Rule Improvement in DWTS}
 
 \usepackage{fontspec}
 \usepackage{xeCJK}
@@ -99,12 +99,23 @@
 \end{center}
 
 \begin{sloppypar}
-Enter your summary here, outlining the background, methods, models, and main conclusions.
+《与星共舞》（DWTS）长期面临\textbf{专业评委评分}与\textbf{大众投票}间的平衡难题。由于节目方未公开粉丝投票数据，量化观众行为并评估规则公平性成为重要挑战。本研究遵循\textbf{“数据估计–规则比较–系统设计”}的逻辑链条：首先通过\textbf{蒙特卡洛反演}推测粉丝投票序列；随后开展\textbf{“规则回放”模拟}，量化不同规则的偏袒性与稳定性；最终提出\textbf{双轨线性积分系统（DTLSS）}，作为对组委会规则改革的建议。
+
+\textbf{针对问题一}，我们构建了基于\textbf{蒙特卡洛模拟}与\textbf{参数反演}的混合模型，将投票分解为\textbf{基础票}与\textbf{表现票}。模型在\textbf{31/34}个赛季中复现淘汰结果的准确率 ≥ 75\%，平均达\textbf{82.3\%}。引入\textbf{Google Trends}进行外部验证，在28个常规赛季中，模型估计投票与搜索热度的平均相关系数\textbf{r = 0.87}（p < 0.01），并能识别特殊波动（如S27的“沉默粉丝”效应）。确定性方面，超过\textbf{85\%}的关键周次投票估计置信区间宽度控制在 ±15\% 以内，平均确定性评分\textbf{0.78}，表明模型具备高稳定性与可靠性。
+
+\textbf{针对问题二}，基于估计投票进行全赛季规则对比。结果显示，\textbf{百分比法}平均偏袒系数\textbf{I = 2.281}，是排名法的2.06倍，且在\textbf{33/34}个赛季中表现出更强粉丝倾向。在争议案例中，百分比法使“高人气‑低技术”选手平均\textbf{多存活2.1周}，晋级概率提升约\textbf{28\%}。引入\textbf{评委拯救机制}后，争议选手进入后期赛段的比例下降\textbf{34\%}，平均最终排名后移\textbf{1.8位}，显示该机制能有效设立专业底线。两类规则均表现出高稳定性。
+
+\textbf{针对问题三}，我们构建\textbf{双通道随机森林模型}，分别预测评委分与粉丝票。评委通道\textbf{R² = 0.68}，显著受\textbf{舞伴教学能力}与\textbf{选手年龄}影响；粉丝通道\textbf{R² = 0.59}，更依赖\textbf{职业类别}与\textbf{地域背景}。例如，喜剧演员的粉丝票标准化均值高出评委分\textbf{0.82个标准差}，部分高动员州粉丝票均值可达其他地区的\textbf{1.5倍}以上。结果表明评委评价更\textbf{“能力导向”}，粉丝投票更\textbf{“结构导向”}。
+
+基于以上发现，我们提出\textbf{“双轨线性积分系统（DTLSS）”}：采用\textbf{“30+30”对称计分制}，评委分维持满分30分，粉丝分按投票排名线性赋予。该设计通过\textbf{分数上限}约束粉丝影响力过度放大，在极端测试中，可将存活周数\textbf{从全程压缩至5周}，确保专业底线不因人气膨胀而被突破。系统具备\textbf{线性透明、权重对称、解释性强}的特点，提升了结果公平性与过程可解释性。
+
+本研究为DWTS及其他依赖“专家‑大众”双轨评价的节目，提供了从\textbf{数据重建、规则评估到系统设计}的分析框架与可行建议。
+
 \end{sloppypar}
 
 \vspace{1em}
 
-\noindent\textbf{Keywords:} Keyword1, Keyword2, Keyword3
+\noindent\textbf{Keywords:} 蒙特卡洛模拟；参数反演；规则回放；双通道随机森林；双轨线性积分系统（DTLSS）；公平性评估
 
 \clearpage
 
